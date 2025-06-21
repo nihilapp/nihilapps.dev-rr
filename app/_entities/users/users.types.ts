@@ -1,10 +1,11 @@
 import type { InferSelectModel } from 'drizzle-orm';
 
-import { userTable, type userAuthTable, type userRole } from './users.table';
+import { userAuthTable } from './user-auths.table';
+import { userTable, type userRoleEnum } from './users.table';
 
 export type User = InferSelectModel<typeof userTable>;
 export type UserAuth = InferSelectModel<typeof userAuthTable>;
-export type UserRole = typeof userRole.enumValues[ number ];
+export type UserRole = typeof userRoleEnum.enumValues[ number ];
 
 export interface UserSession extends User {
   access_token: string;

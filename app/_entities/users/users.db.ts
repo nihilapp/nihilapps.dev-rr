@@ -1,7 +1,8 @@
 import { eq, inArray } from 'drizzle-orm';
 
 import type { ApiError, ApiResponse } from '@/_entities/common';
-import { userAuthTable, userTable, type CreateUserData, type UpdateUserData, type User, type UserAuth, type UserRole } from '@/_entities/users';
+import { type CreateUserData, type UpdateUserData, type User, type UserRole } from '@/_entities/users';
+import { userAuthTable, userTable } from '@/_entities/users/users.table';
 import { db } from '@/_libs';
 
 export class UserDB {
@@ -63,7 +64,7 @@ export class UserDB {
       .from(userTable)
       .leftJoin(userAuthTable, eq(userTable.id, userAuthTable.user_id))
       .where(eq(userTable.id, id));
-    
+
     if (!user) {
       return {
         status: 404,
