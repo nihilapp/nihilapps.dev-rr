@@ -13,24 +13,24 @@ export const tagTable = pgTable(
   'tags',
   {
     // 태그 ID (UUID, PK)
-    id: uuid('id').primaryKey().defaultRandom(),
+    id: uuid().primaryKey().defaultRandom(),
 
     // 블로그 ID (FK)
-    blog_id: uuid('blog_id')
+    blog_id: uuid()
       .notNull()
       .references(() => blogTable.id, { onDelete: 'cascade', }),
 
     // 태그 이름 (`blog_id`와 함께 UNIQUE)
-    name: varchar('name').notNull(),
+    name: varchar().notNull(),
 
     // 대표 태그 여부
-    is_featured: boolean('is_featured').default(false),
+    is_featured: boolean().default(false),
 
     // 생성일
-    created_at: timestamp('created_at').defaultNow().notNull(),
+    created_at: timestamp().defaultNow().notNull(),
 
     // 삭제된 시각 (Soft Delete용)
-    deleted_at: timestamp('deleted_at'),
+    deleted_at: timestamp(),
   },
   (table) => {
     return {

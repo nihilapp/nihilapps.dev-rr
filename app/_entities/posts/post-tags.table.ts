@@ -8,11 +8,11 @@ export const postTagTable = pgTable(
   'post_tags',
   {
     // 포스트 ID (FK)
-    post_id: uuid('post_id')
+    post_id: uuid()
       .notNull()
       .references(() => postTable.id, { onDelete: 'cascade', }),
     // 태그 ID (FK)
-    tag_id: uuid('tag_id')
+    tag_id: uuid()
       .notNull()
       .references(() => tagTable.id, { onDelete: 'cascade', }),
   },
