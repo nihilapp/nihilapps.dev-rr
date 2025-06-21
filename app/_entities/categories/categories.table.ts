@@ -13,15 +13,15 @@ export const categoryTable = pgTable(
   'categories',
   {
     // 카테고리 ID (UUID, PK)
-    id: uuid('id').primaryKey().defaultRandom(),
+    id: uuid().primaryKey().defaultRandom(),
 
     // 블로그 ID (FK)
-    blog_id: uuid('blog_id')
+    blog_id: uuid()
       .notNull()
       .references(() => blogTable.id, { onDelete: 'cascade', }),
 
     // 상위 카테고리 ID (Nullable, 자기참조 FK)
-    parent_id: uuid('parent_id').references(
+    parent_id: uuid().references(
       (): AnyPgColumn => categoryTable.id,
       {
         onDelete: 'set null',
@@ -29,22 +29,22 @@ export const categoryTable = pgTable(
     ),
 
     // 카테고리 이름 (`blog_id`, `parent_id`와 함께 UNIQUE)
-    name: varchar('name').notNull(),
+    name: varchar().notNull(),
 
     // 카테고리 슬러그 (`blog_id`와 함께 UNIQUE)
-    slug: varchar('slug').notNull(),
+    slug: varchar().notNull(),
 
     // 생성일
-    created_at: timestamp('created_at').defaultNow().notNull(),
+    created_at: timestamp().defaultNow().notNull(),
 
     // 수정일
-    updated_at: timestamp('updated_at')
+    updated_at: timestamp()
       .defaultNow()
       .notNull()
       .$onUpdate(() => new Date()),
 
     // 삭제된 시각 (Soft Delete용)
-    deleted_at: timestamp('deleted_at'),
+    deleted_at: timestamp(),
   },
   (table) => {
     return {
