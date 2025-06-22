@@ -1,174 +1,252 @@
-# 📘 블로그 매니지먼트 시스템 스키마 (개선 반영 버전)
+# 블로그 매니지먼트 시스템 - 프로젝트 개발 체크리스트
+
+본 문서는 멀티 블로그 매니지먼트 시스템 프로젝트의 전반적인 개발 상황을 체크하는 종합 가이드입니다.
 
 ---
 
-## 1. `users`
+## 📖 프로젝트 개요
 
-- `id`: 사용자 고유 ID (UUID, PK, 자동 생성)
-- `email`: 로그인용 이메일 (UNIQUE, NOT NULL)
-- `username`: 사용자 이름 (NOT NULL)
-- `image`: 프로필 이미지 URL
-- `bio`: 관리자 소개글
-- `social_links`: 소셜 미디어 프로필 링크 (JSON)
-- `role`: 사용자 권한 (`SUPER_ADMIN`, `ADMIN`, `USER` 중 하나, 기본값 'USER')
-- `is_active`: 계정 활성화 여부 (기본값 `true`)
-- `last_signed_at`: 마지막 로그인 시각
-- `created_at`: 생성일 (자동 생성)
-- `updated_at`: 수정일 (자동 업데이트)
-- `deleted_at`: 삭제된 시각 (Soft Delete용)
+### 프로젝트 정보
 
----
+- **프로젝트명**: nihilncunia.dev-rr (React Router v7 기반 블로그 매니지먼트 시스템)
+- **목적**: 멀티 블로그 플랫폼 구축 (하나의 시스템에서 여러 블로그 관리)
+- **기술 스택**: React Router v7, TypeScript, Drizzle ORM, PostgreSQL, Tailwind CSS
+- **아키텍처**: 멀티 테넌트 블로그 시스템 (플랫폼 레벨 + 개별 블로그 레벨)
 
-## 2. `user_auths`
+### 현재 진행률 요약
 
-- `id`: 인증 정보 ID (UUID, PK, 자동 생성)
-- `user_id`: `users.id` 참조 (FK, UNIQUE, NOT NULL, ON DELETE CASCADE)
-- `hashed_password`: 해시된 비밀번호
-- `refresh_token`: 리프레시 토큰
-- `created_at`: 생성일 (자동 생성)
-- `updated_at`: 수정일 (자동 업데이트)
-- `deleted_at`: 삭제된 시각 (Soft Delete용)
+- **전체 진행률**: 약 15% (초기 설정 및 기반 구조 완료)
+- **데이터베이스**: 90% 완료 (테이블 스키마 구현 완료)
+- **API**: 4% 완료 (142개 중 5개만 구현) - [상세 내용: task/api-checklist.md](task/api-checklist.md)
+- **라우트**: 10% 완료 (기본 구조만 생성) - [상세 내용: task/route-checklist.md](task/route-checklist.md)
+- **UI 컴포넌트**: 0% 완료 - [상세 내용: task/ui-checklist.md](task/ui-checklist.md)
+- **커스텀 훅**: 0% 완료 (141개 미구현) - [상세 내용: task/hooks-checklist.md](task/hooks-checklist.md)
 
 ---
 
-## 3. `blogs`
+## 🏗️ 기반 구조 및 환경 설정
 
-- `id`: 블로그 고유 ID (UUID, PK)
-- `user_id`: 블로그 주인 ID (FK, users.id)
-- `name`: 블로그 이름
-- `slug`: URL용 고유 슬러그
-- `description`: 블로그 설명
-- `visibility`: `PUBLIC` 또는 `PRIVATE`
-- `settings`: JSON 형태의 커스텀 설정
-- `created_at`: 생성일
-- `updated_at`: 수정일
-- `deleted_at`: 삭제된 시각 (Soft Delete용)
+### 완료된 항목 ✅
 
----
+- [x] **프로젝트 초기화** - React Router v7 프로젝트 생성
+- [x] **패키지 관리자** - pnpm 설정 및 workspace 구성
+- [x] **TypeScript 설정** - 타입 안전성 확보
+- [x] **ESLint 설정** - 코드 품질 관리
+- [x] **Tailwind CSS 설정** - 스타일링 라이브러리 구성
+- [x] **Git 설정** - 버전 관리 시스템 구성
+- [x] **폴더 구조 설계** - entities, libs, routes, icons, styles, config, data 폴더 구성
+- [x] **Drizzle ORM 설정** - 데이터베이스 ORM 구성
+- [x] **데이터베이스 스키마** - 13개 테이블 완전 구현
 
-## 4. `posts`
+### 진행 중/대기 항목 ⏳
 
-- `id`: 포스트 ID (UUID, PK)
-- `blog_id`: 소속 블로그 ID (FK)
-- `category_id`: 소속 카테고리 ID (Nullable, FK)
-- `title`: 포스트 제목
-- `slug`: 블로그 내 고유 슬러그 (`blog_id`와 함께 UNIQUE)
-- `content`: 본문 내용 (MD or HTML)
-- `excerpt`: 요약문
-- `thumbnail_url`: 썸네일 이미지 주소
-- `status`: `DRAFT`, `PUBLISHED`, `ARCHIVED`
-- `visibility`: `PUBLIC`, `PRIVATE`, `PROTECTED`
-- `password`: 보호 상태일 경우 해시된 비밀번호
-- `is_featured`: 추천 포스트 여부
-- `is_pinned`: 상단 고정 여부
-- `view_count`: 조회수 (캐시용)
-- `like_count`: 좋아요 수 (캐시용)
-- `locale`: 언어 정보 (`ko-KR` 등)
-- `published_at`: 발행일
-- `created_at`: 생성일
-- `updated_at`: 수정일
-- `deleted_at`: 삭제된 시각 (Soft Delete용)
+- [ ] **Storybook** - 컴포넌트 개발 및 문서화 도구
+- [ ] **Testing 도구** - Vitest, React Testing Library 설정
+- [ ] **E2E 테스트** - Playwright 설정
 
 ---
 
-## 5. `post_revisions`
+## 🗄️ 데이터베이스
 
-- `id`: 리비전 ID (UUID, PK)
-- `post_id`: 대상 포스트 ID (FK)
-- `title`: 수정 당시 제목
-- `content`: 수정 당시 내용
-- `updated_at`: 이력 생성 시각
+### 완료됨 ✅
 
----
+- [x] **사용자 관리** - users, user_auths 테이블
+- [x] **블로그 관리** - blogs, blog_settings 테이블
+- [x] **포스트 관리** - posts, post_revisions, post_tags 테이블
+- [x] **컨텐츠 분류** - categories, tags 테이블
+- [x] **사용자 인터랙션** - comments, post_views, post_likes 테이블
+- [x] **시스템 관리** - announcements 테이블
+- [x] **마이그레이션 설정** - Drizzle Kit 구성
 
-## 6. `categories`
+### 대기 중 ⏳
 
-- `id`: 카테고리 ID (UUID, PK)
-- `blog_id`: 블로그 ID (FK)
-- `parent_id`: 상위 카테고리 ID (Nullable, 자기참조 FK)
-- `name`: 카테고리 이름 (`blog_id`, `parent_id`와 함께 UNIQUE)
-- `slug`: 카테고리 슬러그 (`blog_id`와 함께 UNIQUE)
-- `created_at`: 생성일
-- `updated_at`: 수정일
-- `deleted_at`: 삭제된 시각 (Soft Delete용)
+- [ ] **시드 데이터** - 개발용 초기 데이터 생성
+- [ ] **인덱스 최적화** - 쿼리 성능 향상
+- [ ] **백업 전략** - 자동화된 백업 시스템
 
 ---
 
-## 7. `tags`
+## 🔧 백엔드 개발 (API)
 
-- `id`: 태그 ID (UUID, PK)
-- `blog_id`: 블로그 ID (FK)
-- `name`: 태그 이름 (`blog_id`와 함께 UNIQUE)
-- `is_featured`: 대표 태그 여부
-- `created_at`: 생성일
-- `deleted_at`: 삭제된 시각 (Soft Delete용)
+> **상세 내용**: [task/api-checklist.md](task/api-checklist.md)
 
----
+### 현재 상황
 
-## 8. `post_tags`
+- **총 142개 API** (5개 완료, 137개 미완료)
+- **플랫폼 관리 API**: 72개 (5개 완료)
+- **블로그별 관리 API**: 69개 (0개 완료)
+- **보안/기타**: 1개 (0개 완료)
 
-- `post_id`: 포스트 ID (FK)
-- `tag_id`: 태그 ID (FK)
-- 복합 PK: (`post_id`, `tag_id`)
+### 완료된 기능 ✅
 
----
+- [x] **사용자 관리 API** - 생성, 조회, 수정, 삭제 (5개)
+- [x] **API 응답 표준화** - createResponse, createErrorResponse 유틸리티
+- [x] **데이터베이스 접근 패턴** - DB 클래스 패턴
 
-## 9. `comments`
+### 우선 개발 필요 🎯
 
-- `id`: 댓글 ID (UUID, PK)
-- `blog_id`: 블로그 ID (FK)
-- `post_id`: 포스트 ID (FK)
-- `parent_id`: 부모 댓글 ID (Nullable, FK)
-- `author_type`: `ADMIN`, `VISITOR`
-- `status`: 댓글 상태 (`PENDING`, `APPROVED`, `SPAM`)
-- `content`: 댓글 내용
-- `visitor_name`: 방문자 이름
-- `visitor_email`: 방문자 이메일
-- `visitor_hashed_password`: 비밀번호 (해시 처리)
-- `created_at`: 작성일
-- `updated_at`: 수정일
-- `deleted_at`: 삭제된 시각 (Soft Delete용)
+- [ ] **인증 시스템** - 로그인/회원가입/세션 관리
+- [ ] **블로그 CRUD** - 블로그 생성/조회/수정/삭제 (7개)
+- [ ] **포스트 CRUD** - 포스트 작성/편집/발행 관리 (22개)
+- [ ] **카테고리 관리** - 계층형 카테고리 시스템 (11개)
+- [ ] **파일 업로드** - 이미지 업로드 및 관리 (6개)
 
 ---
 
-## 10. `post_views`
+## 🎨 프론트엔드 개발
 
-- `id`: 조회 기록 ID (UUID, PK)
-- `blog_id`: 블로그 ID (FK)
-- `post_id`: 포스트 ID (FK)
-- `visitor_id`: 고유 방문자 식별자 (e.g., UUID)
-- `user_agent`: 브라우저 정보
-- `viewed_at`: 조회 시각
+> **상세 내용**: [task/ui-checklist.md](task/ui-checklist.md), [task/route-checklist.md](task/route-checklist.md)
+
+### 라우트 구조
+
+- [x] **기본 라우트 설정** - React Router v7 파일 기반 라우팅
+- [x] **어드민 기본 라우트** - 6개 어드민 페이지 기본 구조
+- [x] **개별 블로그 라우트** - `/blogs/$slug` 기본 구조
+- [ ] **인증 라우트** - 로그인/회원가입 페이지
+- [ ] **공개 페이지 라우트** - 블로그 공개 페이지들
+
+### UI 컴포넌트 시스템
+
+- [ ] **기본 UI 컴포넌트** - Button, Input, Card 등 기본 컴포넌트
+- [ ] **레이아웃 컴포넌트** - 5가지 독립적인 레이아웃 시스템
+- [ ] **페이지 컴포넌트** - 각 라우트별 실제 페이지 구현
+- [ ] **폼 시스템** - React Hook Form + Zod 기반 폼 처리
+
+### 상태 관리 및 데이터 페칭
+
+> **상세 내용**: [task/hooks-checklist.md](task/hooks-checklist.md)
+
+- [x] **Zustand 설정** - 클라이언트 상태 관리
+- [x] **React Hook Form 설정** - 폼 라이브러리 구성
+- [ ] **React Query 설정** - 서버 상태 관리
+- [ ] **커스텀 훅 개발** - 총 141개 훅 (API와 1:1 매칭)
 
 ---
 
-## 11. `post_likes`
+## 🔐 인증 및 보안
 
-- `id`: 좋아요 기록 ID (UUID, PK)
-- `blog_id`: 블로그 ID (FK)
-- `post_id`: 포스트 ID (FK)
-- `visitor_id`: 고유 방문자 식별자
-- `liked_at`: 좋아요 시각
+### 인증 시스템
 
----
+- [ ] **회원가입/로그인** - 이메일 기반 인증
+- [ ] **세션 관리** - 쿠키 기반 세션 스토리지
+- [ ] **비밀번호 보안** - bcrypt 해싱
+- [ ] **권한 관리** - RBAC (SUPER_ADMIN, ADMIN, USER)
 
-## 12. `blog_settings` (선택적)
+### 보안 강화
 
-- `id`: 설정 ID (UUID, PK)
-- `blog_id`: 블로그 ID (FK)
-- `key`: 설정 키
-- `value`: 설정 값
-- `updated_at`: 마지막 수정일
+- [ ] **입력 검증** - 클라이언트/서버 양쪽 검증
+- [ ] **XSS/CSRF 방지** - 보안 공격 방어
+- [ ] **파일 업로드 보안** - 파일 타입/크기 제한
+- [ ] **Rate Limiting** - API 호출 제한
 
 ---
 
-## 13. `announcements`
+## 🚀 추가 기능 및 최적화
 
-- `id`: 공지 ID (UUID, PK)
-- `blog_id`: 블로그 ID (FK)
-- `title`: 공지 제목
-- `content`: 공지 내용
-- `is_pinned`: 상단 고정 여부
-- `created_at`: 생성일
-- `updated_at`: 수정일
-- `deleted_at`: 삭제된 시각 (Soft Delete용)
+### 핵심 기능
+
+- [ ] **댓글 시스템** - 방문자 댓글 및 관리자 답글
+- [ ] **해시태그 시스템** - 포스트 태깅 및 검색
+- [ ] **검색 및 필터링** - 전문 검색 기능
+- [ ] **통계 및 분석** - 조회수, 좋아요 등 통계
+- [ ] **이메일 알림** - 댓글/포스트 알림
+
+### 성능 최적화
+
+- [ ] **코드 스플리팅** - 라우트별 번들 분할
+- [ ] **이미지 최적화** - WebP 포맷, 지연 로딩
+- [ ] **캐싱 전략** - API 응답 및 정적 자원 캐싱
+- [ ] **SEO 최적화** - 메타태그, 사이트맵 등
+
+---
+
+## 🧪 테스트 및 품질 관리
+
+### 테스트 구축
+
+- [ ] **단위 테스트** - 컴포넌트, API, 유틸리티 테스트
+- [ ] **통합 테스트** - API 플로우, DB 연동 테스트
+- [ ] **E2E 테스트** - 주요 사용자 시나리오 테스트
+
+### 품질 관리
+
+- [x] **코딩 표준** - ESLint 규칙 및 포맷팅
+- [ ] **코드 커버리지** - 테스트 커버리지 목표 설정
+- [ ] **성능 기준** - 로딩 시간 및 번들 크기 기준
+
+---
+
+## 🚀 배포 및 운영
+
+### 배포 준비
+
+- [ ] **프로덕션 빌드** - 최적화된 번들 생성
+- [ ] **환경 설정** - 개발/스테이징/프로덕션 환경 분리
+- [ ] **CI/CD 파이프라인** - 자동화된 빌드 및 배포
+
+### 인프라 및 모니터링
+
+- [ ] **서버 인프라** - 웹서버, DB서버, 파일스토리지 구성
+- [ ] **모니터링 시스템** - 성능 추적 및 에러 로깅
+- [ ] **백업 시스템** - 자동화된 백업 및 복원
+
+---
+
+## 📈 우선순위 개발 로드맵
+
+### Phase 1: 기반 구축 완성 (현재 단계)
+
+- [ ] **인증 시스템 완성** - 로그인/회원가입 기능 구현
+- [ ] **기본 UI 컴포넌트** - Button, Input, Card 등 기본 컴포넌트
+- [ ] **블로그 CRUD API** - 블로그 생성/조회/수정/삭제
+- [ ] **어드민 대시보드** - 기본 관리자 페이지 UI 구현
+
+### Phase 2: 핵심 기능 개발
+
+- [ ] **포스트 작성/편집** - 마크다운 에디터, 카테고리 선택
+- [ ] **카테고리 관리** - 계층형 카테고리 시스템
+- [ ] **파일 업로드** - 이미지 업로드 및 관리
+- [ ] **공개 페이지** - 블로그 및 포스트 공개 페이지
+
+### Phase 3: 고급 기능 개발
+
+- [ ] **댓글 시스템** - 방문자 댓글 및 관리자 답글
+- [ ] **해시태그 시스템** - 태그 기반 분류 및 검색
+- [ ] **검색 및 필터링** - 고급 검색 기능
+- [ ] **통계 및 분석** - 대시보드 통계 기능
+
+### Phase 4: 최적화 및 배포
+
+- [ ] **성능 최적화** - 코드 스플리팅, 캐싱 등
+- [ ] **보안 강화** - 보안 취약점 점검 및 개선
+- [ ] **테스트 구축** - 전체 기능 테스트 커버리지
+- [ ] **프로덕션 배포** - 실제 서비스 배포 및 운영
+
+---
+
+## 📊 현재 상태 요약
+
+### ✅ 완료된 항목
+
+- 프로젝트 기본 설정 및 환경 구성
+- 데이터베이스 스키마 완전 구현 (13개 테이블)
+- 기본 API 패턴 및 유틸리티 구현
+- 사용자 관리 API 5개 구현
+- 기본 라우트 구조 설정
+- 폴더 구조 및 개발 규칙 정립
+
+### 🚧 진행 중인 항목
+
+- 어드민 페이지 기본 구조 (라우트만 생성됨)
+
+### ⏳ 다음 단계 권장사항
+
+1. **인증 시스템 완성** - 로그인/회원가입 기능 구현
+2. **기본 UI 컴포넌트** - Shadcn UI 기반 컴포넌트 시스템 구축
+3. **블로그 CRUD API** - 블로그 관리 API 7개 구현
+4. **React Query 설정** - 데이터 페칭 및 상태 관리
+5. **어드민 대시보드** - 실제 동작하는 관리자 페이지 구현
+
+---
+
+**참고**: 각 영역의 상세한 체크리스트는 `task/` 폴더의 개별 문서를 확인하세요.

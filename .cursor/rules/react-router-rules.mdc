@@ -3,16 +3,130 @@ description:
 globs: 
 alwaysApply: true
 ---
-- UI 컴포넌트의 경우 Radix UI에서 직접 import하지 않습니다. 항상 Shadcn UI에서 UI 컴포넌트를 import합니다. 위치는 `app/_pages/(common)/_components/ui` 입니다.
-- Remix에서 import하지 않습니다. 모든 @remix-run import는 react-router에서 가져옵니다.
-- 새로운 페이지를 만들 때는 항상 loader, action, meta 함수를 export합니다.
-- 라우트 타입은 다음과 같이 import합니다: `import type { Route } from "./+types/..."`;
-- useLoaderData는 더 이상 존재하지 않습니다. 컴포넌트는 Router.ComponentProps 타입 파라미터를 통해 loaderData를 받습니다.
-- useActionData는 더 이상 존재하지 않습니다. 컴포넌트는 Router.ComponentProps 타입 파라미터를 통해 actionData를 받습니다.
-- 페이지 컴포넌트에서는 절대 useLoaderData나 useActionData를 사용하지 않습니다.
-- loader 함수는 Route.LoaderArgs 타입의 파라미터를 받습니다.
-- action 함수는 Route.ActionArgs 타입의 파라미터를 받습니다.
-- meta 함수는 Route.MetaFunction 타입의 파라미터를 받으며 MetaFunction 타입을 반환합니다.
-- json은 더 이상 존재하지 않습니다. 일반 객체를 반환합니다: `export function loader({ request }: Route.LoaderArgs) { return { } }`
+# React Router v7 파일 라우트 규칙 및 개발 가이드
 
-- 응답에 상태 코드를 포함시키려면 data를 사용하고, 그렇지 않으면 일반 객체를 반환합니다.
+## 기본 설정
+- `@react-router/fs-routes` 패키지를 설치하여 파일 기반 라우팅 사용
+- `app/routes` 디렉토리의 모든 파일이 자동으로 라우트가 됨
+- 파일 확장자: `.js`, `.jsx`, `.ts`, `.tsx` 사용 가능
+
+## 파일명 규칙
+
+### 기본 라우트
+- `_index.tsx` → `/` (루트 경로)
+- `about.tsx` → `/about`
+
+### 점(.) 구분자로 중첩 경로 생성
+```
+concerts.trending.tsx → /concerts/trending
+concerts.salt-lake-city.tsx → /concerts/salt-lake-city
+```
+
+### 동적 세그먼트 ($)
+- `concerts.$city.tsx` → `/concerts/[city값]`
+- 여러 동적 세그먼트: `concerts.$city.$date.tsx`
+- `params` 객체로 값 접근: `params.city`, `params.date`
+
+### 중첩 라우트 (Nested Routes)
+점 구분자로 자동 중첩 생성:
+```
+concerts.tsx → 부모 라우트
+concerts._index.tsx → /concerts (부모의 인덱스)
+concerts.trending.tsx → /concerts/trending (부모의 자식)
+```
+
+### 레이아웃 중첩 해제 (Trailing Underscore)
+- `concerts_.mine.tsx` → `/concerts/mine`
+- 부모 레이아웃을 상속받지 않음
+
+### 경로 없는 레이아웃 (Leading Underscore)
+- `_auth.login.tsx` → `/login`
+- `_auth.tsx`는 레이아웃만 제공, URL에 포함되지 않음
+
+### 선택적 세그먼트 (Optional Segments)
+- `($lang)._index.tsx` → `/` 또는 `/en`, `/fr` 등
+- 괄호로 감싸면 선택적 세그먼트
+
+### 스플랫 라우트 (Splat Routes)
+- `$.tsx` → 모든 나머지 경로 매칭
+- `files.$.tsx` → `/files/` 이후의 모든 경로
+- `params["*"]`로 매칭된 경로 접근
+
+### 특수 문자 이스케이프
+```
+sitemap[.]xml.tsx → /sitemap.xml
+reports.$id[.pdf].ts → /reports/123.pdf
+```
+
+### 폴더 기반 라우트
+- 폴더 내 `route.tsx` 파일이 실제 라우트 모듈
+- 다른 파일들은 관련 컴포넌트/유틸리티로 활용
+
+## 개발 규칙
+
+### Import 규칙
+- **UI 컴포넌트**: Radix UI 직접 import 금지, 항상 Shadcn UI 사용
+  ```typescript
+  import { Button } from "app/_pages/(common)/_components/ui/button"
+  ```
+- **React Router**: @remix-run import 금지, react-router에서 가져오기
+  ```typescript
+  import { redirect } from "react-router"
+  ```
+
+### 라우트 타입
+```typescript
+import type { Route } from "./+types/route-name"
+```
+
+### 페이지 컴포넌트 구조
+새로운 페이지는 항상 다음 함수들을 export:
+
+```typescript
+import type { Route } from "./+types/example"
+
+// Loader 함수
+export function loader({ request }: Route.LoaderArgs) {
+  return { data: "example" }
+}
+
+// Action 함수
+export function action({ request }: Route.ActionArgs) {
+  return { success: true }
+}
+
+// Meta 함수
+export function meta({ data }: Route.MetaArgs): Route.MetaFunction {
+  return [
+    { title: "페이지 제목" },
+    { name: "description", content: "페이지 설명" }
+  ]
+}
+
+// 페이지 컴포넌트
+export default function ExamplePage({ loaderData, actionData }: Route.ComponentProps) {
+  // useLoaderData, useActionData 사용 금지
+  // Router.ComponentProps를 통해 데이터 접근
+  return <div>{loaderData.data}</div>
+}
+```
+
+### 데이터 반환 규칙
+- **일반 데이터**: 일반 객체 반환 (json 함수 사용 금지)
+  ```typescript
+  export function loader() {
+    return { message: "Hello" }
+  }
+  ```
+- **상태 코드 포함**: data 함수 사용
+  ```typescript
+  export function loader() {
+    return data({ error: "Not found" }, { status: 404 })
+  }
+  ```
+
+### 금지 사항
+- `useLoaderData()`, `useActionData()` 훅 사용 금지
+- `@remix-run/*` 패키지에서 import 금지
+- `json()` 함수 사용 금지
+- Radix UI 직접 import 금지

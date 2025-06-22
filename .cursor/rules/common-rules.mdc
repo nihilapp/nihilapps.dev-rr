@@ -29,10 +29,13 @@ alwaysApply: true
 [app/_entities 폴더]
 - /app/_entities 폴더에는 프로젝트의 각 자원별로 index.ts / <자원>.api.ts / <자원>.store.ts / <자원>.keys.ts / <자원>.types.ts / hooks 폴더 를 두고 파일들을 관리한다.
 - 각 기능별로 hooks, types, api, store, keys 등 하위 폴더/파일을 명확히 분리한다.
+- <자원>.table.ts 는 드리즐 ORM을 위한 파일이다.
 
-[app/_pages 폴더]
-- app/_pages 폴더에는 프론트의 라우트별로 폴더가 존재하며 해당 라우트 폴더(_pages 폴더 안에 있는 폴더) 안에는 <페이지 이름>Page.tsx 파일이 위치한다. 이 <페이지 이름>Page.tsx 파일은 export default 로 내보내야 한다.
-- 하나의 라우트 폴더는 _components 폴더와 _layouts 폴더를 가진다. 이 각각의 폴더에는 리액트 컴포넌트들이 위치하며 index.ts 파일을 통해서 명시적으로 export 해야한다.
+[app/_components 폴더]
+- _components 폴더에는 각 라우트별로 필요한 컴포넌트를 저장된다. 라우트는 폴더로 구분한다.
+
+[app/_routes 폴더]
+- _routes 폴더에는 `app/routes.ts` 에 명시된 대로 파일명으로 라우트가 생성되기 위한 파일들이 존재하며 각각의 파일들이 하나의 페이지가 된다.
 
 [app/_styles 폴더]
 - css 파일 혹은 scss 파일이 위치하는 폴더이다.

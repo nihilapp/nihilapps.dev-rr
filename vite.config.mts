@@ -19,4 +19,7 @@ export default defineConfig({
   ssr: {
     noExternal: ['drizzle-orm', 'postgres', 'stream-browserify'],
   },
+  optimizeDeps: {
+    exclude: ['otplib', 'qrcode'],
+  },
 });

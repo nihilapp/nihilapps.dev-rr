@@ -12,6 +12,9 @@ export const userAuthTable = pgTable('user_auths', {
     .unique()
     .references(() => userTable.id, { onDelete: 'cascade', }),
 
+  // 패스코드
+  passcode: text(),
+
   // 해시된 비밀번호
   hashed_password: varchar(),
 

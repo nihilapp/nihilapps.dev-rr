@@ -2,7 +2,8 @@ import { eq, inArray } from 'drizzle-orm';
 
 import type { ApiError, ApiResponse } from '@/_entities/common';
 import { type CreateUserData, type UpdateUserData, type User, type UserRole } from '@/_entities/users';
-import { userAuthTable, userTable } from '@/_entities/users/users.table';
+import { userAuthTable } from '@/_entities/users/user-auths.table';
+import { userTable } from '@/_entities/users/users.table';
 import { db } from '@/_libs';
 
 export class UserDB {
