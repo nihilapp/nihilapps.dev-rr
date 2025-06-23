@@ -1,6 +1,6 @@
-import { Link, Outlet } from 'react-router';
+import { Outlet } from 'react-router';
 
-import { siteConfig } from '@/_config';
+import { AuthLayout } from '@/_components/auth';
 
 import type { Route } from './+types/auth';
 
@@ -12,19 +12,10 @@ export function action({ request, }: Route.ActionArgs) {
   return {};
 }
 
-export default function AuthLayout({}: Route.ComponentProps) {
+export default function AuthLayoutRoute({}: Route.ComponentProps) {
   return (
-    <main className='flex flex-col items-center justify-center dvh-100 dvw-100 bg-gray-50 dark:bg-gray-950'>
-      <div className='mb-8'>
-        <Link to='/'>
-          <img
-            src={siteConfig.logo}
-            alt='Nihilncunia Logo'
-            className='h-10 w-auto'
-          />
-        </Link>
-      </div>
+    <AuthLayout>
       <Outlet />
-    </main>
+    </AuthLayout>
   );
 }

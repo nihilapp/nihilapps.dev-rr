@@ -45,7 +45,7 @@
 - **`action`**
   - [ ] **POST** `_action: 'signUp'` - 이메일, 사용자명, 비밀번호로 새 계정을 생성합니다.
 
-### `app/_routes/auth.logout.tsx` (Action 전용 라우트)
+### `app/_routes/auth.signout.tsx` (Action 전용 라우트)
 
 - **`action`**
   - [ ] **POST** - 세션을 파기하고 사용자를 로그아웃시킨 후 홈페이지로 리다이렉트합니다.

@@ -1,0 +1,1 @@
+ALTER TABLE "user_auths" ADD COLUMN "otp_secret" text;

@@ -1,20 +1,140 @@
-# UI 개발 체크 리스트 (Remix 버전 - 5개 레이아웃)
+# UI 개발 체크 리스트 (React Router v7 기준)
 
-본 문서는 블로그 매니지먼트 시스템(멀티 블로그) 프로젝트의 UI 구현 항목을 자원(도메인)별로 분류하여 정리한 체크리스트입니다. 5가지 독립적인 레이아웃을 사용합니다.
+본 문서는 블로그 매니지먼트 시스템(멀티 블로그) 프로젝트의 UI 구현 항목을 자원(도메인)별로 분류하여 정리한 체크리스트입니다. 실제 프로젝트 구조와 react-router-rules를 따릅니다.
+
+---
+
+## 🏗️ 파일 구조 및 라우트 예시 (실제 프로젝트 기준)
+
+```
+app/
+├── _routes/
+│   ├── _index.tsx                        # / (플랫폼 홈, 레이아웃 없음)
+│   ├── about.tsx                         # /about
+│   ├── admin.tsx                         # /admin/* (시스템 어드민 레이아웃)
+│   ├── admin._index.tsx                  # /admin (어드민 대시보드)
+│   ├── admin.blogs.tsx                   # /admin/blogs
+│   ├── admin.posts.tsx                   # /admin/posts
+│   ├── admin.categories.tsx              # /admin/categories
+│   ├── admin.tags.tsx                    # /admin/tags
+│   ├── admin.comments.tsx                # /admin/comments
+│   ├── auth.tsx                          # /auth/* (인증 레이아웃)
+│   ├── auth.signin.tsx                   # /auth/signin
+│   ├── auth.signup.tsx                   # /auth/signup
+│   ├── auth.shield.tsx                   # /auth/shield
+│   ├── auth.otp.tsx                      # /auth/otp
+│   ├── auth.signout.tsx                  # /auth/signout (로그아웃 action)
+│   ├── blogs.$slug.tsx                   # /blogs/:slug/* (개별 블로그 레이아웃)
+│   ├── blogs.$slug._index.tsx            # /blogs/:slug
+│   ├── blogs.$slug.posts._index.tsx      # /blogs/:slug/posts
+│   ├── blogs.$slug.posts.$postSlug.tsx   # /blogs/:slug/posts/:postSlug
+│   ├── blogs.$slug.categories.$categorySlug.tsx # /blogs/:slug/categories/:categorySlug
+│   ├── blogs.$slug.admin.tsx             # /blogs/:slug/admin/* (블로그 어드민 레이아웃)
+│   ├── blogs.$slug.admin._index.tsx      # /blogs/:slug/admin
+│   ├── blogs.$slug.admin.posts._index.tsx# /blogs/:slug/admin/posts
+│   ├── blogs.$slug.admin.posts.new.tsx   # /blogs/:slug/admin/posts/new
+│   ├── blogs.$slug.admin.posts.$id.edit.tsx # /blogs/:slug/admin/posts/:id/edit
+│   ├── blogs.$slug.admin.categories.tsx  # /blogs/:slug/admin/categories
+│   ├── blogs.$slug.admin.hashtags.tsx    # /blogs/:slug/admin/hashtags
+│   ├── blogs.$slug.admin.comments.tsx    # /blogs/:slug/admin/comments
+│   ├── blogs.$slug.admin.settings.tsx    # /blogs/:slug/admin/settings
+│   ├── blogs.$slug.admin.images.tsx      # /blogs/:slug/admin/images
+```
 
 ---
 
-## 🏗️ 레이아웃 구조 개요
+## 🗺️ URL 매핑 목록 (실제 라우트 → URL)
 
-| 경로 패턴              | 레이아웃                    | 설명                    |
-| ---------------------- | --------------------------- | ----------------------- |
-| `/`                    | 레이아웃 없음               | 멀티 블로그 플랫폼 홈   |
-| `/auth/*`              | 인증 레이아웃               | 로그인/회원가입 페이지  |
-| `/admin/*`             | 플랫폼 어드민 레이아웃      | 멀티 블로그 시스템 관리 |
-| `/blog/<slug>/*`       | 개별 블로그 레이아웃        | 각 블로그의 공개 페이지 |
-| `/blog/<slug>/admin/*` | 개별 블로그 어드민 레이아웃 | 각 블로그의 관리 페이지 |
+1. `/` - `_index.tsx` (레이아웃 없음)
+2. `/about` - `about.tsx` (레이아웃 없음)
+3. `/auth/signin` - `auth.signin.tsx` (인증 레이아웃)
+4. `/auth/signup` - `auth.signup.tsx` (인증 레이아웃)
+5. `/auth/shield` - `auth.shield.tsx` (인증 레이아웃)
+6. `/auth/otp` - `auth.otp.tsx` (인증 레이아웃)
+7. `/auth/signout` - `auth.signout.tsx` (인증 레이아웃, action only)
+8. `/admin` - `admin._index.tsx` (시스템 어드민 레이아웃)
+9. `/admin/blogs` - `admin.blogs.tsx` (시스템 어드민 레이아웃)
+10. `/admin/posts` - `admin.posts.tsx` (시스템 어드민 레이아웃)
+11. `/admin/categories` - `admin.categories.tsx` (시스템 어드민 레이아웃)
+12. `/admin/tags` - `admin.tags.tsx` (시스템 어드민 레이아웃)
+13. `/admin/comments` - `admin.comments.tsx` (시스템 어드민 레이아웃)
+14. `/blogs/:slug` - `blogs.$slug._index.tsx` (개별 블로그 레이아웃)
+15. `/blogs/:slug/posts` - `blogs.$slug.posts._index.tsx` (개별 블로그 레이아웃)
+16. `/blogs/:slug/posts/:postSlug` - `blogs.$slug.posts.$postSlug.tsx` (개별 블로그 레이아웃)
+17. `/blogs/:slug/categories/:categorySlug` - `blogs.$slug.categories.$categorySlug.tsx` (개별 블로그 레이아웃)
+18. `/blogs/:slug/admin` - `blogs.$slug.admin._index.tsx` (블로그 어드민 레이아웃)
+19. `/blogs/:slug/admin/posts` - `blogs.$slug.admin.posts._index.tsx` (블로그 어드민 레이아웃)
+20. `/blogs/:slug/admin/posts/new` - `blogs.$slug.admin.posts.new.tsx` (블로그 어드민 레이아웃)
+21. `/blogs/:slug/admin/posts/:id/edit` - `blogs.$slug.admin.posts.$id.edit.tsx` (블로그 어드민 레이아웃)
+22. `/blogs/:slug/admin/categories` - `blogs.$slug.admin.categories.tsx` (블로그 어드민 레이아웃)
+23. `/blogs/:slug/admin/hashtags` - `blogs.$slug.admin.hashtags.tsx` (블로그 어드민 레이아웃)
+24. `/blogs/:slug/admin/comments` - `blogs.$slug.admin.comments.tsx` (블로그 어드민 레이아웃)
+25. `/blogs/:slug/admin/settings` - `blogs.$slug.admin.settings.tsx` (블로그 어드민 레이아웃)
+26. `/blogs/:slug/admin/images` - `blogs.$slug.admin.images.tsx` (블로그 어드민 레이아웃)
 
 ---
+
+## 🧩 레이아웃/페이지 컴포넌트 예시 (React Router v7, 실제 규칙 반영)
+
+```tsx
+// 예시: app/_routes/auth.tsx (인증 레이아웃)
+import { Outlet } from "react-router";
+import { AuthLayout } from "@/_components/layouts/AuthLayout";
+
+export default function AuthLayoutRoute() {
+  return (
+    <AuthLayout>
+      <Outlet />
+    </AuthLayout>
+  );
+}
+
+// 예시: app/_routes/admin.tsx (시스템 어드민 레이아웃)
+import { Outlet } from "react-router";
+import { AdminLayout } from "@/_components/layouts/AdminLayout";
+
+export default function AdminLayoutRoute() {
+  return (
+    <AdminLayout>
+      <Outlet />
+    </AdminLayout>
+  );
+}
+
+// 예시: app/_routes/blogs.$slug.tsx (개별 블로그 레이아웃)
+import { Outlet } from "react-router";
+import { BlogLayout } from "@/_components/layouts/BlogLayout";
+
+export default function BlogLayoutRoute() {
+  return (
+    <BlogLayout>
+      <Outlet />
+    </BlogLayout>
+  );
+}
+
+// 예시: app/_routes/blogs.$slug.admin.tsx (블로그 어드민 레이아웃)
+import { Outlet } from "react-router";
+import { BlogAdminLayout } from "@/_components/layouts/BlogAdminLayout";
+
+export default function BlogAdminLayoutRoute() {
+  return (
+    <BlogAdminLayout>
+      <Outlet />
+    </BlogAdminLayout>
+  );
+}
+```
+
+---
+
+## 주요 규칙 반영 사항
+
+- 폴더/파일명: `_routes/` 폴더, kebab-case 및 동적 세그먼트($) 활용, 점(.)으로 중첩 라우트 구현
+- 레이아웃: 각 주요 경로별로 레이아웃 파일 존재 (`admin.tsx`, `auth.tsx`, `blogs.$slug.tsx`, `blogs.$slug.admin.tsx`)
+- 라우트: 점(.)/달러($) 규칙, 실제 URL과 파일명 1:1 매핑
+- 컴포넌트 import: 항상 `@/_components` 등 alias 사용, shadcn UI만 사용
+- 라우트 컴포넌트: `Outlet` 사용, Remix 문법/패턴 제거, `react-router`만 사용
 
 ## 🌐 플랫폼 홈 UI (No Layout)
 
@@ -371,419 +491,6 @@
 - 통계 및 분석
 
 ---
-
-## 🔧 Remix Pathless Layout 구조
-
-### 1. 파일 구조 예시
-
-```
-app/
-├── routes/
-│   ├── _index.tsx                                    # / (레이아웃 없음)
-│   ├── posts._index.tsx                              # /posts
-│   ├── search.tsx                                    # /search
-│   ├── about.tsx                                     # /about
-│   │
-│   ├── _auth.tsx                                     # 인증 레이아웃 (pathless)
-│   ├── _auth.signin.tsx                              # /auth/signin
-│   ├── _auth.signup.tsx                              # /auth/signup
-│   ├── _auth.forgot-password.tsx                     # /auth/forgot-password
-│   │
-│   ├── _platform-admin.tsx                          # 플랫폼 어드민 레이아웃 (pathless)
-│   ├── _platform-admin._index.tsx                   # /admin
-│   ├── _platform-admin.users._index.tsx             # /admin/users
-│   ├── _platform-admin.users.$id.tsx                # /admin/users/123
-│   ├── _platform-admin.blogs._index.tsx             # /admin/blogs
-│   ├── _platform-admin.blogs.$slug._index.tsx       # /admin/blogs/my-blog
-│   │
-│   ├── blog.$slug.tsx                                # 개별 블로그 레이아웃 (nested)
-│   ├── blog.$slug._index.tsx                         # /blog/my-blog
-│   ├── blog.$slug.posts._index.tsx                   # /blog/my-blog/posts
-│   ├── blog.$slug.posts.$postSlug.tsx                # /blog/my-blog/posts/hello
-│   ├── blog.$slug.categories.$categorySlug.tsx       # /blog/my-blog/categories/tech
-│   │
-│   ├── blog.$slug._blog-admin.tsx                    # 개별 블로그 어드민 레이아웃 (pathless)
-│   ├── blog.$slug._blog-admin._index.tsx             # /blog/my-blog/admin
-│   ├── blog.$slug._blog-admin.posts._index.tsx       # /blog/my-blog/admin/posts
-│   ├── blog.$slug._blog-admin.posts.new.tsx          # /blog/my-blog/admin/posts/new
-│   ├── blog.$slug._blog-admin.posts.$id.edit.tsx     # /blog/my-blog/admin/posts/123/edit
-│   ├── blog.$slug._blog-admin.categories._index.tsx  # /blog/my-blog/admin/categories
-│   ├── blog.$slug._blog-admin.settings._index.tsx    # /blog/my-blog/admin/settings
-│   │
-│   └── api.auth.logout.tsx                           # API 라우트
-├── components/
-│   ├── layouts/
-│   │   ├── AuthLayout.tsx                            # 인증 레이아웃
-│   │   ├── PlatformAdminLayout.tsx                   # 플랫폼 어드민 레이아웃
-│   │   ├── BlogLayout.tsx                            # 개별 블로그 레이아웃
-│   │   └── BlogAdminLayout.tsx                       # 개별 블로그 어드민 레이아웃
-│   ├── admin/
-│   │   ├── PlatformSidebar.tsx
-│   │   └── BlogSidebar.tsx
-│   ├── blog/
-│   │   ├── BlogHeader.tsx
-│   │   ├── BlogNavigation.tsx
-│   │   └── BlogFooter.tsx
-│   └── common/
-│       ├── Breadcrumb.tsx
-│       ├── Pagination.tsx
-│       └── Toast.tsx
-└── contexts/
-    ├── BlogContext.tsx
-    └── ThemeContext.tsx
-```
-
-### 2. 레이아웃 파일 구현
-
-```typescript
-// app/routes/_auth.tsx - 인증 레이아웃
-import { Outlet } from "@remix-run/react";
-import { AuthLayout } from "~/components/layouts/AuthLayout";
-
-export default function AuthLayoutRoute() {
-  return (
-    <AuthLayout>
-      <Outlet />
-    </AuthLayout>
-  );
-}
-
-// app/routes/_platform-admin.tsx - 플랫폼 어드민 레이아웃
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import { PlatformAdminLayout } from "~/components/layouts/PlatformAdminLayout";
-import { requirePlatformAdmin } from "~/utils/auth.server";
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requirePlatformAdmin(request);
-  return json({ user });
-};
-
-export default function PlatformAdminLayoutRoute() {
-  const { user } = useLoaderData<typeof loader>();
-
-  return (
-    <PlatformAdminLayout user={user}>
-      <Outlet />
-    </PlatformAdminLayout>
-  );
-}
-
-// app/routes/blog.$slug.tsx - 개별 블로그 레이아웃 (nested)
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import { BlogLayout } from "~/components/layouts/BlogLayout";
-import { getBlogBySlug } from "~/models/blog.server";
-
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const blog = await getBlogBySlug(params.slug!);
-  if (!blog) {
-    throw new Response("Blog not found", { status: 404 });
-  }
-  return json({ blog });
-};
-
-export default function BlogLayoutRoute() {
-  const { blog } = useLoaderData<typeof loader>();
-
-  return (
-    <BlogLayout blog={blog}>
-      <Outlet />
-    </BlogLayout>
-  );
-}
-
-// app/routes/blog.$slug._blog-admin.tsx - 개별 블로그 어드민 레이아웃 (pathless)
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import { BlogAdminLayout } from "~/components/layouts/BlogAdminLayout";
-import { requireBlogAdmin } from "~/utils/auth.server";
-import { getBlogBySlug } from "~/models/blog.server";
-
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const blog = await getBlogBySlug(params.slug!);
-  if (!blog) {
-    throw new Response("Blog not found", { status: 404 });
-  }
-
-  const user = await requireBlogAdmin(request, blog.id);
-  return json({ user, blog });
-};
-
-export default function BlogAdminLayoutRoute() {
-  const { user, blog } = useLoaderData<typeof loader>();
-
-  return (
-    <BlogAdminLayout user={user} blog={blog}>
-      <Outlet />
-    </BlogAdminLayout>
-  );
-}
-```
-
-### 3. URL 매핑 테이블
-
-| URL                         | 파일                                      | 레이아웃                    |
-| --------------------------- | ----------------------------------------- | --------------------------- |
-| `/`                         | `_index.tsx`                              | 레이아웃 없음               |
-| `/posts`                    | `posts._index.tsx`                        | 레이아웃 없음               |
-| `/auth/signin`              | `_auth.signin.tsx`                        | 인증 레이아웃               |
-| `/auth/signup`              | `_auth.signup.tsx`                        | 인증 레이아웃               |
-| `/admin`                    | `_platform-admin._index.tsx`              | 플랫폼 어드민 레이아웃      |
-| `/admin/users`              | `_platform-admin.users._index.tsx`        | 플랫폼 어드민 레이아웃      |
-| `/admin/blogs`              | `_platform-admin.blogs._index.tsx`        | 플랫폼 어드민 레이아웃      |
-| `/blog/my-blog`             | `blog.$slug._index.tsx`                   | 개별 블로그 레이아웃        |
-| `/blog/my-blog/posts`       | `blog.$slug.posts._index.tsx`             | 개별 블로그 레이아웃        |
-| `/blog/my-blog/admin`       | `blog.$slug._blog-admin._index.tsx`       | 개별 블로그 어드민 레이아웃 |
-| `/blog/my-blog/admin/posts` | `blog.$slug._blog-admin.posts._index.tsx` | 개별 블로그 어드민 레이아웃 |
-
-### 4. 레이아웃 컴포넌트 구현 예시
-
-```typescript
-// app/components/layouts/AuthLayout.tsx
-import type { ReactNode } from "react";
-import { Link } from "@remix-run/react";
-
-interface AuthLayoutProps {
-  children: ReactNode;
-}
-
-export function AuthLayout({ children }: AuthLayoutProps) {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <Link to="/" className="text-3xl font-bold text-indigo-600">
-            BlogPlatform
-          </Link>
-          <p className="mt-2 text-gray-600">멀티 블로그 플랫폼</p>
-        </div>
-
-        <div className="bg-white py-8 px-6 shadow-lg rounded-lg">
-          {children}
-        </div>
-
-        <div className="text-center text-sm text-gray-500">
-          <Link to="/" className="hover:text-indigo-600">
-            홈으로 돌아가기
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// app/components/layouts/PlatformAdminLayout.tsx
-import type { ReactNode } from "react";
-import { Link, Form } from "@remix-run/react";
-import { PlatformSidebar } from "~/components/admin/PlatformSidebar";
-
-interface PlatformAdminLayoutProps {
-  children: ReactNode;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-  };
-}
-
-export function PlatformAdminLayout({
-  children,
-  user,
-}: PlatformAdminLayoutProps) {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Link to="/admin" className="text-xl font-bold text-indigo-600">
-                Platform Admin
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700">
-                {user.name} ({user.role})
-              </span>
-              <Form action="/api/auth/logout" method="post">
-                <button
-                  type="submit"
-                  className="text-sm text-gray-500 hover:text-gray-700"
-                >
-                  로그아웃
-                </button>
-              </Form>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="flex">
-        {/* Sidebar */}
-        <PlatformSidebar />
-
-        {/* Main Content */}
-        <main className="flex-1 p-8">{children}</main>
-      </div>
-    </div>
-  );
-}
-
-// app/components/layouts/BlogLayout.tsx
-import type { ReactNode } from "react";
-import { BlogHeader } from "~/components/blog/BlogHeader";
-import { BlogNavigation } from "~/components/blog/BlogNavigation";
-import { BlogFooter } from "~/components/blog/BlogFooter";
-
-interface BlogLayoutProps {
-  children: ReactNode;
-  blog: {
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-    theme: string;
-  };
-}
-
-export function BlogLayout({ children, blog }: BlogLayoutProps) {
-  return (
-    <div className={`min-h-screen blog-theme-${blog.theme}`}>
-      <BlogHeader blog={blog} />
-      <BlogNavigation blog={blog} />
-
-      <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
-
-      <BlogFooter blog={blog} />
-    </div>
-  );
-}
-
-// app/components/layouts/BlogAdminLayout.tsx
-import type { ReactNode } from "react";
-import { Link, Form } from "@remix-run/react";
-import { BlogSidebar } from "~/components/admin/BlogSidebar";
-
-interface BlogAdminLayoutProps {
-  children: ReactNode;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
-  blog: {
-    id: string;
-    name: string;
-    slug: string;
-  };
-}
-
-export function BlogAdminLayout({
-  children,
-  user,
-  blog,
-}: BlogAdminLayoutProps) {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <Link
-                to={`/blog/${blog.slug}/admin`}
-                className="text-xl font-bold text-green-600"
-              >
-                {blog.name} Admin
-              </Link>
-              <Link
-                to={`/blog/${blog.slug}`}
-                className="text-sm text-gray-500 hover:text-gray-700"
-              >
-                블로그 보기
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700">{user.name}</span>
-              <Form action="/api/auth/logout" method="post">
-                <button
-                  type="submit"
-                  className="text-sm text-gray-500 hover:text-gray-700"
-                >
-                  로그아웃
-                </button>
-              </Form>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="flex">
-        {/* Sidebar */}
-        <BlogSidebar blog={blog} />
-
-        {/* Main Content */}
-        <main className="flex-1 p-8">{children}</main>
-      </div>
-    </div>
-  );
-}
-```
-
-### 5. 인증 처리 유틸리티
-
-```typescript
-// app/utils/auth.server.ts
-import { redirect } from "@remix-run/node";
-import { getSession } from "~/utils/session.server";
-
-export async function requirePlatformAdmin(request: Request) {
-  const session = await getSession(request.headers.get("Cookie"));
-  const userId = session.get("userId");
-
-  if (!userId) {
-    throw redirect("/auth/signin");
-  }
-
-  const user = await getUserById(userId);
-  if (!user || user.role !== "platform_admin") {
-    throw redirect("/auth/signin");
-  }
-
-  return user;
-}
-
-export async function requireBlogAdmin(request: Request, blogId: string) {
-  const session = await getSession(request.headers.get("Cookie"));
-  const userId = session.get("userId");
-
-  if (!userId) {
-    throw redirect("/auth/signin");
-  }
-
-  const user = await getUserById(userId);
-  if (!user) {
-    throw redirect("/auth/signin");
-  }
-
-  // 플랫폼 어드민이거나 해당 블로그의 소유자/편집자인지 확인
-  const hasAccess =
-    user.role === "platform_admin" || (await checkBlogAccess(userId, blogId));
-
-  if (!hasAccess) {
-    throw new Response("Forbidden", { status: 403 });
-  }
-
-  return user;
-}
-```
-
-이제 5가지 독립적인 레이아웃을 가진 완전한 UI 체크리스트가 완성되었습니다!
 
 ## 🎯 핵심 특징
 

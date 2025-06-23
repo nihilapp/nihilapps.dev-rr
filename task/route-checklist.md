@@ -42,6 +42,7 @@
 - [ ] `auth.shield.tsx` - **(신규)** 1단계 보안: 패스코드 인증
 - [ ] `auth.otp.tsx` - **(신규)** 2단계 보안: 2FA/OTP 인증
 - [ ] `auth.signup.tsx` - **(보안)** 시스템 회원가입. `shield`와 `otp`를 통과해야만 접근 가능.
+- [ ] `auth.signout.tsx` - 로그아웃(action만 존재.)
 
 ---
 
