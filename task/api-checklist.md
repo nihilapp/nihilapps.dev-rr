@@ -1,331 +1,237 @@
-# API 개발 체크 리스트 (Remix 버전)
+# 페이지별 기능 개발 체크리스트 (React Router v7)
 
-본 문서는 블로그 매니지먼트 시스템 프로젝트에서 사용될 주요 API들과 그 기능을 정리한 것입니다. Remix의 리소스 라우트(Resource Route) 시스템을 사용하여 구현됩니다.
-
----
-
-## 📌 플랫폼 관리 API (Platform Management)
-
-### 1. 인증(Auth) API
-
-- [x] **POST** `app/routes/api.auth.signup.tsx` - 새로운 관리자를 생성합니다. (요청 데이터: `email`, `username`, `password`)
-
-> **참고**: Remix Auth 사용으로 다음 기능들은 구성 필요:
->
-> - 로그인: `app/routes/api.auth.login.tsx` - 로그인 처리
-> - 로그아웃: `app/routes/api.auth.logout.tsx` - 로그아웃 처리
-> - 세션 조회: `app/utils/auth.server.ts`에서 세션 관리
-> - 토큰 갱신: 세션 스토리지에서 자동 처리
-
-### 2. 사용자(User) API
-
-- [x] **GET** `app/routes/api.users._index.tsx` - 관리자 목록을 조회합니다.
-- [x] **GET** `app/routes/api.users.$id.tsx` - 특정 관리자의 상세 정보를 가져옵니다.
-- [x] **GET** `app/routes/api.users.email.$email.tsx` - 이메일로 관리자를 검색합니다.
-- [x] **GET** `app/routes/api.users.username.$username.tsx` - 사용자명으로 관리자를 검색합니다.
-- [x] **POST** `app/routes/api.users._index.tsx` - 관리자를 새로 생성합니다. (요청 데이터: `email`, `name`, `role`, `password`)
-- [x] **PUT** `app/routes/api.users.$id.tsx` - 관리자 기본 정보를 수정합니다.
-- [x] **PUT** `app/routes/api.users.$id.password.tsx` - 관리자 비밀번호를 변경합니다.
-- [x] **PUT** `app/routes/api.users.$id.image.tsx` - 프로필 이미지를 수정합니다.
-- [x] **DELETE** `app/routes/api.users.$id.tsx` - 관리자를 삭제합니다.
-- [x] **DELETE** `app/routes/api.users._index.tsx` - 여러 관리자를 한 번에 삭제합니다. (요청 데이터: `ids` 배열)
-
-### 3. 블로그(Blog) API
-
-- [ ] **GET** `app/routes/api.blogs._index.tsx` - 내 블로그 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.tsx` - 특정 블로그 상세 정보를 조회합니다.
-- [ ] **POST** `app/routes/api.blogs._index.tsx` - 새 블로그를 생성합니다. (요청 데이터: `name`, `title`, `description`, `slug`, `theme`, `settings`)
-- [ ] **PUT** `app/routes/api.blogs.$slug.tsx` - 블로그 정보를 수정합니다.
-- [ ] **DELETE** `app/routes/api.blogs.$slug.tsx` - 블로그를 삭제합니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.status.tsx` - 블로그 활성화/비활성화를 변경합니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.visibility.tsx` - 블로그 공개/비공개를 변경합니다.
-
-### 4. 플랫폼 전체 포스트 API (모든 블로그)
-
-- [ ] **GET** `app/routes/api.posts._index.tsx` - 모든 블로그의 포스트 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.posts.$id.tsx` - 특정 포스트의 상세 정보를 조회합니다.
-- [ ] **GET** `app/routes/api.posts.slug.$slug.tsx` - 슬러그로 포스트를 조회합니다.
-- [ ] **POST** `app/routes/api.posts._index.tsx` - 새 포스트를 작성합니다. (카테고리, 해시태그 등 포함)
-- [ ] **PUT** `app/routes/api.posts.$id.tsx` - 기존 포스트를 수정합니다.
-- [ ] **DELETE** `app/routes/api.posts.$id.tsx` - 포스트를 삭제합니다.
-- [ ] **GET** `app/routes/api.posts.search.tsx` - 키워드로 포스트를 검색합니다.
-- [ ] **PATCH** `app/routes/api.posts.$id.publish.tsx` - 포스트의 공개 상태를 변경합니다.
-- [ ] **PATCH** `app/routes/api.posts.$id.views.tsx` - 조회수를 증가시키고 조회 이력을 저장합니다.
-- [ ] **PATCH** `app/routes/api.posts.$id.likes.tsx` - 좋아요 수를 증가시킵니다.
-- [ ] **POST** `app/routes/api.posts.$id.like.tsx` - 사용자의 좋아요 추가를 처리합니다.
-- [ ] **DELETE** `app/routes/api.posts.$id.like.tsx` - 사용자의 좋아요 취소를 처리합니다.
-- [ ] **GET** `app/routes/api.posts.$id.views.tsx` - 특정 포스트의 조회 이력을 조회합니다.
-- [ ] **GET** `app/routes/api.posts.$id.likes.tsx` - 특정 포스트의 좋아요 이력을 조회합니다.
-- [ ] **POST** `app/routes/api.posts.$id.view.tsx` - 포스트 조회수를 증가시키고 조회 기록을 저장합니다.
-- [ ] **POST** `app/routes/api.posts.draft.tsx` - 임시 저장용 포스트를 생성합니다.
-- [ ] **GET** `app/routes/api.posts.drafts.tsx` - 임시 저장된 포스트 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.posts.drafts.$id.restore.tsx` - 임시 저장본을 불러와 복구합니다.
-- [ ] **PATCH** `app/routes/api.posts.$id.autosave.tsx` - 작성 중인 포스트를 자동 저장합니다.
-- [ ] **PATCH** `app/routes/api.posts.batch-status.tsx` - 여러 포스트의 상태를 일괄 변경합니다.
-- [ ] **DELETE** `app/routes/api.posts.batch.tsx` - 선택한 포스트들을 한꺼번에 삭제합니다.
-- [ ] **GET** `app/routes/api.posts.$id.related.tsx` - 해당 포스트와 관련된 글을 추천합니다.
-
-### 5. 플랫폼 전체 카테고리 API (모든 블로그)
-
-- [ ] **GET** `app/routes/api.categories._index.tsx` - 모든 블로그의 카테고리를 계층 구조로 조회합니다.
-- [ ] **GET** `app/routes/api.categories.flat.tsx` - 모든 블로그의 카테고리를 평면 목록으로 조회합니다.
-- [ ] **GET** `app/routes/api.categories.$id.tsx` - 특정 카테고리 상세 정보를 조회합니다.
-- [ ] **GET** `app/routes/api.categories.slug.$slug.tsx` - 슬러그로 카테고리를 조회합니다.
-- [ ] **POST** `app/routes/api.categories._index.tsx` - 카테고리를 생성합니다. (요청 데이터: `name`, `slug`, `description`, `parent_id`, `order`)
-- [ ] **PUT** `app/routes/api.categories.$id.tsx` - 카테고리 정보를 수정합니다.
-- [ ] **PATCH** `app/routes/api.categories.$id.order.tsx` - 카테고리 순서를 변경합니다.
-- [ ] **PATCH** `app/routes/api.categories.$id.status.tsx` - 카테고리 활성화/비활성화를 변경합니다.
-- [ ] **DELETE** `app/routes/api.categories.$id.tsx` - 카테고리를 삭제합니다.
-- [ ] **GET** `app/routes/api.categories.$id.posts.tsx` - 특정 카테고리에 속한 포스트 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.categories.$id.children.tsx` - 특정 카테고리의 하위 카테고리를 조회합니다.
-
-### 6. 플랫폼 전체 해시태그 API (모든 블로그)
-
-- [ ] **GET** `app/routes/api.hashtags._index.tsx` - 모든 블로그의 해시태그를 조회합니다.
-- [ ] **POST** `app/routes/api.hashtags._index.tsx` - 해시태그를 생성합니다.
-- [ ] **PUT** `app/routes/api.hashtags.$id.tsx` - 해시태그 이름을 수정합니다.
-- [ ] **DELETE** `app/routes/api.hashtags.$id.tsx` - 해시태그를 삭제합니다.
-- [ ] **GET** `app/routes/api.hashtags.$id.posts.tsx` - 해당 해시태그가 달린 포스트 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.hashtags.autocomplete.tsx` - 키워드로 해시태그 자동완성 목록을 가져옵니다.
-
-### 7. 플랫폼 전체 댓글 API (모든 블로그)
-
-- [ ] **GET** `app/routes/api.comments._index.tsx` - 모든 블로그의 댓글 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.comments.$id.tsx` - 특정 댓글의 상세 정보를 조회합니다.
-- [ ] **GET** `app/routes/api.comments.post.$postId.tsx` - 포스트별 댓글 목록을 가져옵니다.
-- [ ] **POST** `app/routes/api.comments._index.tsx` - 방문자가 댓글을 작성합니다.
-- [ ] **POST** `app/routes/api.comments.$id.reply.tsx` - 관리자가 댓글에 답변을 달 때 사용합니다.
-- [ ] **PUT** `app/routes/api.comments.$id.tsx` - 댓글 내용을 수정합니다.
-- [ ] **DELETE** `app/routes/api.comments.$id.tsx` - 댓글을 삭제합니다.
-- [ ] **PATCH** `app/routes/api.comments.$id.approve.tsx` - 댓글 승인 또는 거부 상태를 변경합니다.
-- [ ] **POST** `app/routes/api.comments.verify.tsx` - 비밀번호 검증을 통해 댓글 작성자를 확인합니다.
-
-### 8. 플랫폼 전체 이미지 업로드 API (모든 블로그)
-
-- [ ] **POST** `app/routes/api.upload.image.tsx` - 이미지를 업로드합니다.
-- [ ] **GET** `app/routes/api.upload.images.tsx` - 업로드된 이미지 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.upload.images.$id.tsx` - 특정 이미지 상세 정보를 조회합니다.
-- [ ] **PUT** `app/routes/api.upload.images.$id.tsx` - 이미지 메타데이터를 수정합니다. (alt_text 등)
-- [ ] **DELETE** `app/routes/api.upload.images.$id.tsx` - 업로드된 이미지를 삭제합니다.
-- [ ] **POST** `app/routes/api.upload.images.batch-delete.tsx` - 여러 이미지를 일괄 삭제합니다.
+본 문서는 각 페이지(라우트)가 어떤 데이터 로딩(`loader`)과 상태 변경(`action`) 기능을 책임져야 하는지 정의하는 체크리스트입니다. API를 위한 별도 라우트 대신, 페이지 중심의 데이터 흐름을 따릅니다.
 
 ---
 
-## 📝 블로그별 관리 API (Blog-Specific Management)
+## 🔑 인증 (Auth)
 
-### 9. 블로그별 포스트 API
+### `app/_routes/auth.signin.tsx`
 
-- [ ] **GET** `app/routes/api.blogs.$slug.posts._index.tsx` - 해당 블로그의 포스트 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.posts.$id.tsx` - 해당 블로그의 특정 포스트를 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.posts.slug.$postSlug.tsx` - 해당 블로그의 포스트를 슬러그로 조회합니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.posts._index.tsx` - 해당 블로그에 새 포스트를 작성합니다.
-- [ ] **PUT** `app/routes/api.blogs.$slug.posts.$id.tsx` - 해당 블로그의 포스트를 수정합니다.
-- [ ] **DELETE** `app/routes/api.blogs.$slug.posts.$id.tsx` - 해당 블로그의 포스트를 삭제합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.posts.search.tsx` - 해당 블로그에서 포스트를 검색합니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.posts.$id.publish.tsx` - 해당 블로그 포스트의 공개 상태를 변경합니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.posts.$id.views.tsx` - 해당 블로그 포스트의 조회수를 증가시킵니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.posts.$id.likes.tsx` - 해당 블로그 포스트의 좋아요 수를 증가시킵니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.posts.$id.like.tsx` - 해당 블로그 포스트의 좋아요를 추가합니다.
-- [ ] **DELETE** `app/routes/api.blogs.$slug.posts.$id.like.tsx` - 해당 블로그 포스트의 좋아요를 취소합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.posts.$id.views.tsx` - 해당 블로그 포스트의 조회 이력을 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.posts.$id.likes.tsx` - 해당 블로그 포스트의 좋아요 이력을 조회합니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.posts.$id.view.tsx` - 해당 블로그 포스트의 조회 기록을 생성합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.posts.drafts.tsx` - 해당 블로그의 임시저장 포스트 목록을 조회합니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.posts.draft.tsx` - 해당 블로그에 임시저장 포스트를 생성합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.posts.drafts.$id.restore.tsx` - 해당 블로그의 임시 저장본을 복구합니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.posts.$id.autosave.tsx` - 해당 블로그 포스트를 자동 저장합니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.posts.batch-status.tsx` - 해당 블로그 포스트 상태를 일괄 변경합니다.
-- [ ] **DELETE** `app/routes/api.blogs.$slug.posts.batch.tsx` - 해당 블로그 포스트를 일괄 삭제합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.posts.$id.related.tsx` - 해당 블로그의 관련 포스트를 추천합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'signInWithEmail'` - 이메일/비밀번호 검증. 성공 시, 바로 어드민 페이지로 보내는 것이 아니라, **`/auth/shield`로 리다이렉트**하여 1단계 보안 절차를 시작.
+  - [ ] **POST** `_action: 'signInWithProvider'` - 소셜 로그인 처리. 성공 시 마찬가지로 `/auth/shield`로 리다이렉트.
 
-### 10. 블로그별 카테고리 API
+### `app/_routes/auth.shield.tsx` (1단계: 패스코드)
 
-- [ ] **GET** `app/routes/api.blogs.$slug.categories._index.tsx` - 해당 블로그의 카테고리를 계층 구조로 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.categories.flat.tsx` - 해당 블로그의 카테고리를 평면 목록으로 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.categories.$id.tsx` - 해당 블로그의 특정 카테고리를 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.categories.slug.$categorySlug.tsx` - 해당 블로그의 카테고리를 슬러그로 조회합니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.categories._index.tsx` - 해당 블로그에 카테고리를 생성합니다.
-- [ ] **PUT** `app/routes/api.blogs.$slug.categories.$id.tsx` - 해당 블로그의 카테고리를 수정합니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.categories.$id.order.tsx` - 해당 블로그 카테고리의 순서를 변경합니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.categories.$id.status.tsx` - 해당 블로그 카테고리의 활성화/비활성화를 변경합니다.
-- [ ] **DELETE** `app/routes/api.blogs.$slug.categories.$id.tsx` - 해당 블로그의 카테고리를 삭제합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.categories.$id.posts.tsx` - 해당 블로그 카테고리의 포스트 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.categories.$id.children.tsx` - 해당 블로그 카테고리의 하위 카테고리를 조회합니다.
+- **`loader`**
 
-### 11. 블로그별 해시태그 API
+  - [ ] 페이지 접근 시, 40자리의 암호학적으로 안전한 패스코드를 생성.
+  - [ ] 생성된 패스코드의 해시(hash) 값과 1분의 만료 시간을 세션에 저장.
+  - [ ] 원본 패스코드를 관리자 이메일로 발송.
 
-- [ ] **GET** `app/routes/api.blogs.$slug.hashtags._index.tsx` - 해당 블로그의 해시태그를 조회합니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.hashtags._index.tsx` - 해당 블로그에 해시태그를 생성합니다.
-- [ ] **PUT** `app/routes/api.blogs.$slug.hashtags.$id.tsx` - 해당 블로그의 해시태그를 수정합니다.
-- [ ] **DELETE** `app/routes/api.blogs.$slug.hashtags.$id.tsx` - 해당 블로그의 해시태그를 삭제합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.hashtags.$id.posts.tsx` - 해당 블로그 해시태그의 포스트 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.hashtags.autocomplete.tsx` - 해당 블로그의 해시태그 자동완성을 제공합니다.
+- **`action`**
+  - [ ] **POST** - 사용자가 제출한 패스코드가 세션의 해시 값과 일치하는지, 그리고 1분 안에 제출되었는지 검증.
+  - [ ] 성공 시: 세션에 `shieldPassedAt` 타임스탬프를 기록하고, 다음 단계인 **`/auth/otp`로 리다이렉트**.
+  - [ ] 실패 시: 세션의 패스코드 정보를 파기하고, **메인 페이지(`/`)로 리다이렉트**.
 
-### 12. 블로그별 댓글 API
+### `app/_routes/auth.otp.tsx` (2단계: 2FA/OTP)
 
-- [ ] **GET** `app/routes/api.blogs.$slug.comments._index.tsx` - 해당 블로그의 댓글 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.comments.$id.tsx` - 해당 블로그의 특정 댓글을 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.comments.post.$postId.tsx` - 해당 블로그 포스트의 댓글 목록을 조회합니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.comments._index.tsx` - 해당 블로그에 댓글을 작성합니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.comments.$id.reply.tsx` - 해당 블로그 댓글에 답글을 작성합니다.
-- [ ] **PUT** `app/routes/api.blogs.$slug.comments.$id.tsx` - 해당 블로그의 댓글을 수정합니다.
-- [ ] **DELETE** `app/routes/api.blogs.$slug.comments.$id.tsx` - 해당 블로그의 댓글을 삭제합니다.
-- [ ] **PATCH** `app/routes/api.blogs.$slug.comments.$id.approve.tsx` - 해당 블로그 댓글의 승인 상태를 변경합니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.comments.verify.tsx` - 해당 블로그 댓글 작성자를 인증합니다.
+- **`loader`**
 
-### 13. 블로그별 이미지 업로드 API
+  - [ ] `shield`를 통과했는지 확인. 통과하지 않았다면 `/auth/shield`로 리다이렉트.
 
-- [ ] **POST** `app/routes/api.blogs.$slug.upload.image.tsx` - 해당 블로그에 이미지를 업로드합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.upload.images.tsx` - 해당 블로그의 업로드된 이미지 목록을 조회합니다.
-- [ ] **GET** `app/routes/api.blogs.$slug.upload.images.$id.tsx` - 해당 블로그의 특정 이미지를 조회합니다.
-- [ ] **PUT** `app/routes/api.blogs.$slug.upload.images.$id.tsx` - 해당 블로그의 이미지 메타데이터를 수정합니다.
-- [ ] **DELETE** `app/routes/api.blogs.$slug.upload.images.$id.tsx` - 해당 블로그의 이미지를 삭제합니다.
-- [ ] **POST** `app/routes/api.blogs.$slug.upload.images.batch-delete.tsx` - 해당 블로그의 이미지를 일괄 삭제합니다.
+- **`action`**
+  - [ ] **POST** - 사용자가 제출한 OTP 코드가 유효한지 검증.
+  - [ ] 성공 시: 세션에 `otpPassedAt` 타임스탬프를 기록하고, 원래 목적지였던 **어드민 페이지 또는 `/admin`으로 리다이렉트**.
+  - [ ] 실패 시: 에러 메시지를 표시.
+
+### `app/_routes/auth.signup.tsx`
+
+- **`loader`**
+
+  - [ ] **(중요)** `admin.tsx`의 `loader`와 동일하게, `shield`와 `otp` 인증을 모두 통과했는지 확인. 하나라도 통과하지 못했다면 해당 인증 단계로 리다이렉트.
+
+- **`action`**
+  - [ ] **POST** `_action: 'signUp'` - 이메일, 사용자명, 비밀번호로 새 계정을 생성합니다.
+
+### `app/_routes/auth.logout.tsx` (Action 전용 라우트)
+
+- **`action`**
+  - [ ] **POST** - 세션을 파기하고 사용자를 로그아웃시킨 후 홈페이지로 리다이렉트합니다.
 
 ---
 
-## 🔒 기타/보안/SEO 관련 API
+## ⚙️ 시스템 어드민 (`/admin/*`)
 
-- [ ] **보안 미들웨어**: CORS, CSRF, XSS, Rate Limiting, 파일 업로드 보안, 에러 로깅, 댓글 스팸 방지, 이메일 발송 보안 등 보안 관련 API/미들웨어 구현 필요
+### `app/_routes/admin.tsx` (시스템 어드민 레이아웃 - 보안 게이트웨이)
+
+- **`loader`**
+  - [ ] **(중요)** 모든 `/admin/*` 경로에 대한 접근을 통제하는 중앙 관문.
+  - [ ] **1. 로그인 확인**: 세션에 `userId`가 없으면 `/auth/signin`으로 리다이렉트.
+  - [ ] **2. 패스코드(Shield) 확인**: 세션에 유효한 `shieldPassedAt` 타임스탬프(예: 24시간 이내)가 없으면 `/auth/shield`로 리다이렉트.
+  - [ ] **3. OTP 확인**: 세션에 유효한 `otpPassedAt` 타임스탬프가 없으면 `/auth/otp`로 리다이렉트.
+  - [ ] **4. 권한 확인**: 모든 인증 통과 후, 사용자가 어드민 권한(SUPER_ADMIN, ADMIN)을 가졌는지 최종 확인. 권한 없으면 에러 페이지 표시.
+  - [ ] 모든 관문을 통과하면, 레이아웃에 필요한 기본 데이터(사이드바 메뉴 등)를 조회하여 반환.
+
+### `app/_routes/admin._index.tsx` (대시보드)
+
+- **`loader`**
+  - [ ] 플랫폼 전체 현황을 볼 수 있는 통계 데이터를 조회합니다. (총 블로그, 포스트, 사용자, 댓글 수 등)
+  - [ ] 최근 활동 로그를 조회합니다.
+
+### `app/_routes/admin.users.tsx` (사용자 관리)
+
+- **`loader`**
+  - [ ] 전체 사용자 목록을 페이지네이션과 함께 조회합니다.
+  - [ ] 검색 쿼리(이름, 이메일) 및 역할(Role)에 따른 필터링 기능을 제공합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'createUser'` - 새 사용자를 생성합니다.
+  - [ ] **PATCH** `_action: 'updateUser'` - 특정 사용자 정보를 수정합니다.
+  - [ ] **PATCH** `_action: 'updateUserPassword'` - 특정 사용자 비밀번호를 강제로 변경합니다.
+  - [ ] **PATCH** `_action: 'updateUserRole'` - 특정 사용자 역할을 변경합니다.
+  - [ ] **DELETE** `_action: 'deleteUser'` - 특정 사용자를 삭제합니다.
+  - [ ] **POST** `_action: 'deleteMultipleUsers'` - 여러 사용자를 일괄 삭제합니다.
+
+### `app/_routes/admin.blogs._index.tsx` (블로그 관리)
+
+- **`loader`**
+  - [ ] 전체 블로그 목록을 페이지네이션 및 검색 기능과 함께 조회합니다.
+- **`action`**
+  - [ ] **DELETE** `_action: 'deleteBlog'` - 특정 블로그를 삭제합니다.
+  - [ ] **PATCH** `_action: 'updateBlogStatus'` - 블로그 활성화/비활성화 상태를 변경합니다.
+  - [ ] **PATCH** `_action: 'updateBlogVisibility'` - 블로그 공개/비공개 상태를 변경합니다.
+
+### `app/_routes/admin.blogs.new.tsx` (새 블로그 생성)
+
+- **`action`**
+  - [ ] **POST** - 새 블로그를 생성합니다. (요청: `name`, `title`, `description`, `slug`, `theme`, `settings`)
+
+### `app/_routes/admin.blogs.$id.edit.tsx` (블로그 설정 수정)
+
+- **`loader`**
+  - [ ] 수정할 특정 블로그의 상세 정보를 조회합니다.
+- **`action`**
+  - [ ] **PUT** `_action: 'updateBlog'` - 블로그 기본 정보를 수정합니다.
+
+### `app/_routes/admin.posts._index.tsx` (통합 포스트 관리)
+
+- **`loader`**
+  - [ ] 모든 블로그의 포스트 목록을 페이지네이션, 검색, 필터링(블로그별, 카테고리별) 기능과 함께 조회합니다.
+- **`action`**
+  - [ ] **DELETE** `_action: 'deletePost'` - 특정 포스트를 삭제합니다.
+  - [ ] **PATCH** `_action: 'updatePostStatus'` - 특정 포스트의 공개 상태를 변경합니다.
+  - [ ] **POST** `_action: 'batchDeletePosts'` - 여러 포스트를 일괄 삭제합니다.
+  - [ ] **POST** `_action: 'batchUpdateStatus'` - 여러 포스트의 상태를 일괄 변경합니다.
+
+### `app/_routes/admin.categories.tsx` (통합 카테고리 관리)
+
+- **`loader`**
+  - [ ] 모든 블로그의 카테고리를 계층 구조 또는 평면 목록으로 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'createCategory'` - 새 카테고리를 생성합니다.
+  - [ ] **PUT** `_action: 'updateCategory'` - 카테고리 정보를 수정합니다.
+  - [ ] **PATCH** `_action: 'updateCategoryOrder'` - 카테고리 순서를 변경합니다.
+  - [ ] **DELETE** `_action: 'deleteCategory'` - 카테고리를 삭제합니다.
+
+### `app/_routes/admin.hashtags.tsx` (통합 해시태그 관리)
+
+- **`loader`**
+  - [ ] 모든 블로그의 해시태그 목록과 각 태그가 사용된 횟수를 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'createHashtag'` - 새 해시태그를 생성합니다.
+  - [ ] **PUT** `_action: 'updateHashtag'` - 해시태그 이름을 수정합니다.
+  - [ ] **DELETE** `_action: 'deleteHashtag'` - 해시태그를 삭제합니다.
+
+### `app/_routes/admin.comments.tsx` (통합 댓글 관리)
+
+- **`loader`**
+  - [ ] 모든 블로그의 댓글 목록을 페이지네이션 및 검색 기능과 함께 조회합니다.
+- **`action`**
+  - [ ] **PATCH** `_action: 'approveComment'` - 댓글을 승인/비승인 처리합니다.
+  - [ ] **DELETE** `_action: 'deleteComment'` - 댓글을 삭제합니다.
 
 ---
 
-## 📊 요약 통계
+## 📝 개별 블로그 공개 페이지 (`/blogs/$slug/*`)
 
-### 전체 API 현황
+### `app/_routes/blogs.$slug.tsx` (블로그 레이아웃)
 
-- **플랫폼 관리 API**: 72개 (5개 완료 ✅)
-- **블로그별 관리 API**: 69개 (0개 완료)
-- **보안/기타**: 1개 (0개 완료)
-- **전체**: **142개** (5개 완료, 137개 미완료)
+- **`loader`**
+  - [ ] `slug`에 해당하는 블로그의 기본 정보(이름, 테마, 설정) 및 네비게이션(카테고리 목록 등)을 조회합니다.
+  - [ ] 블로그가 없거나 비공개/비활성 상태이고 권한이 없으면 404를 반환합니다.
 
-### 세부 분석
+### `app/_routes/blogs.$slug._index.tsx` (블로그 홈)
 
-#### 플랫폼 관리 API - 72개 (모든 블로그 통합 관리)
+- **`loader`**
+  - [ ] 해당 블로그의 최신 포스트 목록을 조회합니다.
+  - [ ] 공지사항이나 대표 포스트가 있다면 함께 조회합니다.
 
-- 인증 API: 1개 ✅
-- 사용자 API: 10개 (5개 완료 ✅)
-- 블로그 API: 7개
-- 플랫폼 전체 포스트 API: 22개
-- 플랫폼 전체 카테고리 API: 11개
-- 플랫폼 전체 해시태그 API: 6개
-- 플랫폼 전체 댓글 API: 9개
-- 플랫폼 전체 이미지 업로드 API: 6개
+### `app/_routes/blogs.$slug.posts.$postSlug.tsx` (포스트 상세 페이지)
 
-#### 블로그별 관리 API - 69개 (개별 블로그 관리)
+- **`loader`**
+  - [ ] `postSlug`에 해당하는 포스트의 상세 내용을 조회합니다.
+  - [ ] 포스트 조회수를 1 증가시킵니다. (중복 방지 로직 포함)
+  - [ ] 해당 포스트의 댓글 목록을 조회합니다.
+  - [ ] 현재 사용자의 좋아요 여부를 확인합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'createComment'` - 방문자가 댓글을 작성합니다.
+  - [ ] **POST** `_action: 'deleteComment'` - 방문자가 비밀번호 검증 후 자신의 댓글을 삭제합니다.
+  - [ ] **POST** `_action: 'toggleLike'` - 사용자가 포스트에 좋아요를 누르거나 취소합니다.
 
-- 블로그별 포스트 API: 22개
-- 블로그별 카테고리 API: 11개
-- 블로그별 해시태그 API: 6개
-- 블로그별 댓글 API: 9개
-- 블로그별 이미지 업로드 API: 6개
+### `app/_routes/blogs.$slug.categories.$categorySlug.tsx` (카테고리별 포스트 목록)
 
-### 관리 방식의 차이점
-
-**플랫폼 어드민** 🌐
-
-- 모든 블로그의 콘텐츠를 통합 관리
-- 블로그 생성/삭제/설정 권한
-- 플랫폼 전체 데이터 조회 및 관리
-- 사용자 관리 권한
-
-**블로그별 어드민** 📝
-
-- 해당 블로그의 콘텐츠만 관리
-- 블로그 생성/삭제 권한 없음
-- 해당 블로그 데이터만 조회 및 관리
-- 블로그 소유자/편집자 권한
-
-### 우선순위 개발 권장사항
-
-**Phase 1 (플랫폼 기반)** 🔥
-
-- 블로그 CRUD API
-- 사용자 관리 API 완성
-- 플랫폼 포스트 기본 API
-
-**Phase 2 (핵심 기능)** ⭐
-
-- 블로그별 포스트 CRUD API
-- 카테고리 관리 API (플랫폼/블로그별)
-- 파일 업로드 API
-
-**Phase 3 (고급 기능)** 🚀
-
-- 댓글 시스템 API
-- 해시태그 API
-- 이메일 알림 시스템
-
-**Phase 4 (최적화)** ✨
-
-- 보안 강화 API
-- 성능 최적화
+- **`loader`**
+  - [ ] `categorySlug`에 해당하는 카테고리 정보와 해당 카테고리에 속한 포스트 목록을 조회합니다.
 
 ---
 
-## 🔧 Remix 구현 특징
+## 🔧 개별 블로그 어드민 (`/blogs/$slug/admin/*`)
 
-### 리소스 라우트 구현 방법
+### `app/_routes/blogs.$slug.admin.tsx` (블로그 어드민 레이아웃)
 
-```typescript
-// app/routes/api.users._index.tsx
-import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+- **`loader`**
+  - [ ] 현재 사용자가 해당 블로그(`$slug`)의 관리자(소유자 또는 편집자)인지 확인합니다.
+  - [ ] 권한이 없으면 404 또는 403 페이지를 표시합니다.
+  - [ ] 블로그 어드민용 사이드바 메뉴 정보를 조회합니다.
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // GET 요청 처리
-  const users = await getUserList();
-  return json(users);
-};
+### `app/_routes/blogs.$slug.admin._index.tsx` (블로그 대시보드)
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const method = request.method;
+- **`loader`**
+  - [ ] 해당 블로그의 통계 데이터(조회수, 방문자 수, 인기 포스트 등)를 조회합니다.
 
-  switch (method) {
-    case "POST":
-      // POST 요청 처리
-      const formData = await request.formData();
-      const result = await createUser(formData);
-      return json(result);
+### `app/_routes/blogs.$slug.admin.posts._index.tsx` (포스트 관리)
 
-    case "DELETE":
-      // DELETE 요청 처리 (일괄 삭제)
-      const { ids } = await request.json();
-      const deleteResult = await deleteUsers(ids);
-      return json(deleteResult);
+- **`loader`**
+  - [ ] 해당 블로그의 포스트 목록을 페이지네이션 및 검색 기능과 함께 조회합니다.
+- **`action`**
+  - [ ] **PATCH** `_action: 'updatePostStatus'` - 포스트의 공개/비공개 상태를 변경합니다.
+  - [ ] **DELETE** `_action: 'deletePost'` - 포스트를 삭제합니다.
 
-    default:
-      return json({ error: "Method not allowed" }, { status: 405 });
-  }
-};
-```
+### `app/_routes/blogs.$slug.admin.posts.new.tsx` (새 포스트 작성)
 
-### 인증 미들웨어
+- **`loader`**
+  - [ ] 포스트 작성에 필요한 기본 데이터(카테고리, 해시태그 목록 등)를 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'createPost'` - 새 포스트를 생성합니다.
+  - [ ] **PUT** `_action: 'saveDraft'` - 포스트를 임시 저장합니다.
+  - [ ] **PUT** `_action: 'autosave'` - 포스트를 주기적으로 자동 저장합니다.
 
-```typescript
-// app/utils/auth.server.ts
-import { createCookieSessionStorage } from "@remix-run/node";
+### `app/_routes/blogs.$slug.admin.posts.$id.edit.tsx` (포스트 수정)
 
-export const sessionStorage = createCookieSessionStorage({
-  cookie: {
-    name: "__session",
-    httpOnly: true,
-    maxAge: 60 * 60 * 24 * 7, // 7 days
-    path: "/",
-    sameSite: "lax",
-    secrets: [process.env.SESSION_SECRET!],
-    secure: process.env.NODE_ENV === "production",
-  },
-});
+- **`loader`**
+  - [ ] 수정할 포스트의 상세 정보와 포스트 작성에 필요한 기본 데이터를 조회합니다.
+- **`action`**
+  - [ ] **PUT** `_action: 'updatePost'` - 포스트 내용을 수정합니다.
+  - [ ] **PUT** `_action: 'saveDraft'` - 수정 중인 포스트를 임시 저장합니다.
+  - [ ] **PUT** `_action: 'autosave'` - 수정 중인 포스트를 자동 저장합니다.
 
-export async function requireAuth(request: Request) {
-  const session = await getSession(request.headers.get("Cookie"));
-  const userId = session.get("userId");
+### `app/_routes/blogs.$slug.admin.categories.tsx` (카테고리 관리)
 
-  if (!userId) {
-    throw new Response("Unauthorized", { status: 401 });
-  }
+- **`loader`**
+  - [ ] 해당 블로그의 카테고리 목록을 계층 구조로 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'createCategory'` - 새 카테고리를 생성합니다.
+  - [ ] **PUT** `_action: 'updateCategory'` - 카테고리 정보를 수정합니다.
+  - [ ] **PATCH** `_action: 'updateCategoryOrder'` - 카테고리 순서를 변경합니다.
+  - [ ] **DELETE** `_action: 'deleteCategory'` - 카테고리를 삭제합니다.
 
-  return userId;
-}
-```
+### `app/_routes/blogs.$slug.admin.images.tsx` (이미지 갤러리)
+
+- **`loader`**
+  - [ ] 해당 블로그에 업로드된 이미지 목록을 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'uploadImage'` - 새 이미지를 업로드합니다.
+  - [ ] **PATCH** `_action: 'updateImageMeta'` - 이미지 메타데이터(alt 태그 등)를 수정합니다.
+  - [ ] **DELETE** `_action: 'deleteImage'` - 이미지를 삭제합니다.
+  - [ ] **POST** `_action: 'batchDeleteImages'` - 여러 이미지를 일괄 삭제합니다.

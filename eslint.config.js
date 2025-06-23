@@ -112,6 +112,7 @@ export default tseslint.config(
       'no-underscore-dangle': 'off',
 
       // Stylistic 규칙
+      '@stylistic/multiline-ternary': [ 'warn', 'never', ],
       '@stylistic/arrow-parens': [ 'error', 'always', ],
       '@stylistic/quotes': [ 'warn', 'single', { allowTemplateLiterals: true, }, ],
       '@stylistic/semi': [ 'error', 'always', ],
@@ -178,6 +179,7 @@ export default tseslint.config(
 
       // React 규칙
       '@stylistic/jsx-indent': [ 'warn', 2, ],
+      '@stylistic/jsx-indent-props': [ 'warn', 2, ],
       '@stylistic/jsx-curly-spacing': [ 'error', { when: 'never', children: true, }, ],
       'react/jsx-props-no-spreading': 'off',
       'react/forbid-prop-types': 'off',

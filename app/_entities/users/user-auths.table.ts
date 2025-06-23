@@ -15,6 +15,9 @@ export const userAuthTable = pgTable('user_auths', {
   // 패스코드
   passcode: text(),
 
+  // OTP 비밀 키 (2FA용)
+  otp_secret: text(),
+
   // 해시된 비밀번호
   hashed_password: varchar(),
 

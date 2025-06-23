@@ -6,14 +6,15 @@
 
 ## 🏗️ 레이아웃 구조 개요
 
-프로젝트는 4가지 독립적인 레이아웃으로 구성됩니다:
+프로젝트는 4가지 독립적인 레이아웃으로 구성되며, 강력한 인증 계층이 존재합니다.
 
-| 레이아웃          | 파일 패턴             | 설명                            |
-| ----------------- | --------------------- | ------------------------------- |
-| **메인 플랫폼**   | `_index`              | 레이아웃 없음 - 플랫폼 홈페이지 |
-| **시스템 어드민** | `admin.*`             | 전체 블로그 통합 관리           |
-| **개별 블로그**   | `blogs.$slug.*`       | 각 블로그의 공개 페이지         |
-| **블로그 어드민** | `blogs.$slug.admin.*` | 각 블로그의 관리 페이지         |
+| 레이아웃          | 파일 패턴             | 설명                               |
+| ----------------- | --------------------- | ---------------------------------- |
+| **메인 플랫폼**   | `_index`              | 레이아웃 없음 - 플랫폼 홈페이지    |
+| **인증**          | `_auth.*`             | 로그인, 회원가입, 보안 인증 페이지 |
+| **시스템 어드민** | `admin.*`             | **(보안)** 전체 블로그 통합 관리   |
+| **개별 블로그**   | `blogs.$slug.*`       | 각 블로그의 공개 페이지            |
+| **블로그 어드민** | `blogs.$slug.admin.*` | **(보안)** 각 블로그의 관리 페이지 |
 
 ---
 
@@ -21,14 +22,26 @@
 
 **플랫폼 홈페이지 - 전체 블로그 목록 및 소개**
 
-### 플랫폼 페이지
-
 - [ ] `_index.tsx` - 플랫폼 홈 (전체 블로그 목록, 최신 포스트)
+- [ ] `privacy.tsx` - 개인정보처리방침
+- [ ] `terms.tsx` - 이용약관
+
+---
+
+## 🔐 인증 레이아웃 (`_auth.*`)
+
+**로그인, 회원가입 및 다단계 보안 인증**
+
+### 레이아웃 파일
+
+- [ ] `auth.tsx` - 인증 관련 페이지들의 공통 레이아웃
 
 ### 인증 페이지
 
-- [ ] `auth/signin.tsx` - 시스템 로그인
-- [ ] `auth/signup.tsx` - 시스템 회원가입(개발 환경에서만 노출/버튼도 마찬가지)
+- [ ] `auth.signin.tsx` - 시스템 로그인
+- [ ] `auth.shield.tsx` - **(신규)** 1단계 보안: 패스코드 인증
+- [ ] `auth.otp.tsx` - **(신규)** 2단계 보안: 2FA/OTP 인증
+- [ ] `auth.signup.tsx` - **(보안)** 시스템 회원가입. `shield`와 `otp`를 통과해야만 접근 가능.
 
 ---
 
@@ -38,34 +51,26 @@
 
 ### 레이아웃 파일
 
-- [ ] `admin.tsx` - 시스템 어드민 레이아웃 컴포넌트
+- [x] `admin.tsx` - **(중요)** 시스템 어드민의 **보안 게이트웨이**. 모든 `/admin/*` 접근 시도 시, 로그인 여부, 패스코드, OTP 인증 상태를 중앙에서 확인하고, 미통과 시 적절한 인증 페이지로 리다이렉트.
 
 ### 대시보드
 
-- [ ] `admin._index.tsx` - 전체 시스템 대시보드
+- [x] `admin._index.tsx` - 전체 시스템 대시보드
 - [ ] `admin.analytics.tsx` - 전체 통계 및 분석
-
-### 블로그 관리
-
-- [ ] `admin.blogs._index.tsx` - 내 블로그 목록 관리
-- [ ] `admin.blogs.new.tsx` - 새 블로그 생성
-- [ ] `admin.blogs.$id.edit.tsx` - 블로그 설정 수정
 
 ### 통합 컨텐츠 관리
 
-- [ ] `admin.posts._index.tsx` - 전체 블로그 포스트 통합 관리
-- [ ] `admin.posts.$id.edit.tsx` - 포스트 수정 (어느 블로그든)
-- [ ] `admin.categories.tsx` - 전체 블로그 카테고리 통합 관리
-- [ ] `admin.hashtags.tsx` - 전체 블로그 해시태그 통합 관리
-- [ ] `admin.comments.tsx` - 전체 블로그 댓글 통합 관리
+- [x] `admin.posts.tsx` - 전체 블로그 포스트 통합 관리
+- [x] `admin.categories.tsx` - 전체 블로그 카테고리 통합 관리
+- [x] `admin.tags.tsx` - 전체 블로그 해시태그 통합 관리
+- [x] `admin.comments.tsx` - 전체 블로그 댓글 통합 관리
 
 ### 시스템 관리
 
 - [ ] `admin.users.tsx` - 사용자 관리
+- [ ] `admin.blogs.tsx` - 블로그 관리
 - [ ] `admin.images.tsx` - 전체 이미지 갤러리
-- [ ] `admin.email-logs.tsx` - 이메일 발송 로그
 - [ ] `admin.settings.tsx` - 시스템 설정
-- [ ] `admin.backup.tsx` - 백업 및 복원
 
 ---
 
@@ -82,12 +87,8 @@
 - [ ] `blogs.$slug._index.tsx` - 개별 블로그 홈
 - [ ] `blogs.$slug.posts._index.tsx` - 해당 블로그 포스트 목록
 - [ ] `blogs.$slug.posts.$postSlug.tsx` - 해당 블로그 포스트 상세
-- [ ] `blogs.$slug.categories._index.tsx` - 해당 블로그 카테고리 목록
 - [ ] `blogs.$slug.categories.$categorySlug.tsx` - 해당 블로그 카테고리별 포스트
-- [ ] `blogs.$slug.hashtags._index.tsx` - 해당 블로그 해시태그 목록
-- [ ] `blogs.$slug.hashtags.$hashtagName.tsx` - 해당 블로그 해시태그별 포스트
 - [ ] `blogs.$slug.search.tsx` - 해당 블로그 검색
-- [ ] `blogs.$slug.about.tsx` - 해당 블로그 소개
 
 ---
 
@@ -97,19 +98,17 @@
 
 ### 레이아웃 파일
 
-- [ ] `blogs.$slug.admin.tsx` - 개별 블로그 어드민 레이아웃 컴포넌트
+- [ ] `blogs.$slug.admin.tsx` - **(중요)** 개별 블로그 어드민의 **보안 게이트웨이**. 모든 `/blogs/$slug/admin/*` 접근 시도 시, 해당 블로그에 대한 관리자 권한을 확인.
 
 ### 블로그 대시보드
 
 - [ ] `blogs.$slug.admin._index.tsx` - 해당 블로그 대시보드
-- [ ] `blogs.$slug.admin.analytics.tsx` - 해당 블로그 통계
 
 ### 포스트 관리
 
 - [ ] `blogs.$slug.admin.posts._index.tsx` - 해당 블로그 포스트 관리
 - [ ] `blogs.$slug.admin.posts.new.tsx` - 해당 블로그 새 포스트 작성
 - [ ] `blogs.$slug.admin.posts.$id.edit.tsx` - 해당 블로그 포스트 수정
-- [ ] `blogs.$slug.admin.posts.drafts.tsx` - 해당 블로그 임시저장 목록
 
 ### 컨텐츠 관리
 
