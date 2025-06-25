@@ -29,7 +29,19 @@ export function meta({}: Route.MetaArgs) {
 
 export default function AuthShieldPage({}: Route.ComponentProps) {
   const formModel = z.object({
-    passcode: z.string().min(1, { message: '패스코드를 입력해주세요.', }),
+    passcode: z.string()
+      .min(40, {
+        message: '40자리의 패스코드를 입력하세요.',
+      })
+      .max(40, {
+        message: '40자리의 패스코드를 입력하세요.',
+      })
+      .regex(
+        /^[a-zA-Z0-9-]+$/,
+        {
+          message: '패스코드는 영문자, 숫자, - 기호만 허용합니다.',
+        }
+      ),
   });
 
   const fetcher = useFetcher();

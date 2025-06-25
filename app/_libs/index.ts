@@ -5,3 +5,4 @@ export { setMeta } from './setMeta';
 export { db } from './db';
 export { createResponse } from './createResponse';
 export { createErrorResponse } from './createErrorResponse';
+export { supabase, supabaseServer } from './supabase';

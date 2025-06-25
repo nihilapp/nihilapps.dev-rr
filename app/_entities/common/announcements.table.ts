@@ -35,7 +35,4 @@ export const announcementTable = pgTable('announcements', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
-
-  // 삭제된 시각 (Soft Delete용)
-  deleted_at: timestamp(),
 });

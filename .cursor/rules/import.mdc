@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- `import` 를 할 때에는 `tsconfig.json` 을 참조하여 `alias` 임포트를 항상 사용합니다.
+
+- `@/---` 와 같은 형태가 되어야 합니다.

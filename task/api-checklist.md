@@ -141,6 +141,30 @@
   - [ ] **PATCH** `_action: 'approveComment'` - 댓글을 승인/비승인 처리합니다.
   - [ ] **DELETE** `_action: 'deleteComment'` - 댓글을 삭제합니다.
 
+### `app/_routes/admin.blogs.trash.tsx` (블로그 휴지통)
+
+- **`loader`**
+  - [ ] 소프트 딜리트된(휴지통) 블로그 목록을 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'restoreBlog'` - 블로그 복원
+  - [ ] **DELETE** `_action: 'deleteBlogPermanently'` - 블로그 영구 삭제
+
+### `app/_routes/admin.posts.trash.tsx` (포스트 휴지통)
+
+- **`loader`**
+  - [ ] 소프트 딜리트된(휴지통) 포스트 목록을 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'restorePost'` - 포스트 복원
+  - [ ] **DELETE** `_action: 'deletePostPermanently'` - 포스트 영구 삭제
+
+### `app/_routes/admin.comments.trash.tsx` (댓글 휴지통)
+
+- **`loader`**
+  - [ ] 소프트 딜리트된(휴지통) 댓글 목록을 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'restoreComment'` - 댓글 복원
+  - [ ] **DELETE** `_action: 'deleteCommentPermanently'` - 댓글 영구 삭제
+
 ---
 
 ## 📝 개별 블로그 공개 페이지 (`/blogs/$slug/*`)
@@ -235,3 +259,19 @@
   - [ ] **PATCH** `_action: 'updateImageMeta'` - 이미지 메타데이터(alt 태그 등)를 수정합니다.
   - [ ] **DELETE** `_action: 'deleteImage'` - 이미지를 삭제합니다.
   - [ ] **POST** `_action: 'batchDeleteImages'` - 여러 이미지를 일괄 삭제합니다.
+
+### `app/_routes/blogs.$slug.admin.posts.trash.tsx` (블로그별 포스트 휴지통)
+
+- **`loader`**
+  - [ ] 소프트 딜리트된(휴지통) 포스트 목록을 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'restorePost'` - 포스트 복원
+  - [ ] **DELETE** `_action: 'deletePostPermanently'` - 포스트 영구 삭제
+
+### `app/_routes/blogs.$slug.admin.comments.trash.tsx` (블로그별 댓글 휴지통)
+
+- **`loader`**
+  - [ ] 소프트 딜리트된(휴지통) 댓글 목록을 조회합니다.
+- **`action`**
+  - [ ] **POST** `_action: 'restoreComment'` - 댓글 복원
+  - [ ] **DELETE** `_action: 'deleteCommentPermanently'` - 댓글 영구 삭제

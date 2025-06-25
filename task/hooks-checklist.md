@@ -38,6 +38,9 @@
 - [ ] **useDeleteBlog** - `DELETE /api/blogs/[slug]` - 블로그 삭제
 - [ ] **useUpdateBlogStatus** - `PATCH /api/blogs/[slug]/status` - 블로그 활성화/비활성화
 - [ ] **useUpdateBlogVisibility** - `PATCH /api/blogs/[slug]/visibility` - 블로그 공개/비공개
+- [ ] **useGetTrashedBlogs** - `GET /api/blogs/trash` - 소프트 딜리트된 블로그 목록 조회
+- [ ] **useRestoreBlog** - `POST /api/blogs/[id]/restore` - 블로그 복원
+- [ ] **useDeleteBlogPermanently** - `DELETE /api/blogs/[id]/permanent` - 블로그 영구 삭제
 
 ### 4. 플랫폼 전체 포스트 훅 (모든 블로그)
 
@@ -62,6 +65,9 @@
 - [ ] **useAutosavePost** - `PATCH /api/posts/[id]/autosave` - 자동 저장
 - [ ] **useBatchUpdatePostStatus** - `PATCH /api/posts/batch-status` - 포스트 상태 일괄 변경
 - [ ] **useBatchDeletePosts** - `DELETE /api/posts/batch` - 포스트 일괄 삭제
+- [ ] **useGetTrashedPosts** - `GET /api/posts/trash` - 소프트 딜리트된 포스트 목록 조회
+- [ ] **useRestorePost** - `POST /api/posts/[id]/restore` - 포스트 복원
+- [ ] **useDeletePostPermanently** - `DELETE /api/posts/[id]/permanent` - 포스트 영구 삭제
 - [ ] **useGetRelatedPosts** - `GET /api/posts/[id]/related` - 관련 포스트 추천
 
 ### 5. 플랫폼 전체 카테고리 훅 (모든 블로그)
@@ -98,6 +104,9 @@
 - [ ] **useDeleteComment** - `DELETE /api/comments/[id]` - 댓글 삭제
 - [ ] **useApproveComment** - `PATCH /api/comments/[id]/approve` - 댓글 승인/거부
 - [ ] **useVerifyComment** - `POST /api/comments/verify` - 댓글 작성자 인증
+- [ ] **useGetTrashedComments** - `GET /api/comments/trash` - 소프트 딜리트된 댓글 목록 조회
+- [ ] **useRestoreComment** - `POST /api/comments/[id]/restore` - 댓글 복원
+- [ ] **useDeleteCommentPermanently** - `DELETE /api/comments/[id]/permanent` - 댓글 영구 삭제
 
 ### 8. 플랫폼 전체 이미지 업로드 훅 (모든 블로그)
 
@@ -136,6 +145,9 @@
 - [ ] **useBatchUpdateBlogPostStatus** - `PATCH /api/blogs/[slug]/posts/batch-status` - 블로그별 포스트 상태 일괄 변경
 - [ ] **useBatchDeleteBlogPosts** - `DELETE /api/blogs/[slug]/posts/batch` - 블로그별 포스트 일괄 삭제
 - [ ] **useGetBlogRelatedPosts** - `GET /api/blogs/[slug]/posts/[id]/related` - 블로그별 관련 포스트 추천
+- [ ] **useGetTrashedBlogPosts** - `GET /api/blogs/[slug]/posts/trash` - 블로그별 소프트 딜리트된 포스트 목록 조회
+- [ ] **useRestoreBlogPost** - `POST /api/blogs/[slug]/posts/[id]/restore` - 블로그별 포스트 복원
+- [ ] **useDeleteBlogPostPermanently** - `DELETE /api/blogs/[slug]/posts/[id]/permanent` - 블로그별 포스트 영구 삭제
 
 ### 10. 블로그별 카테고리 훅
 
@@ -171,6 +183,9 @@
 - [ ] **useDeleteBlogComment** - `DELETE /api/blogs/[slug]/comments/[id]` - 블로그별 댓글 삭제
 - [ ] **useApproveBlogComment** - `PATCH /api/blogs/[slug]/comments/[id]/approve` - 블로그별 댓글 승인 상태 변경
 - [ ] **useVerifyBlogComment** - `POST /api/blogs/[slug]/comments/verify` - 블로그별 댓글 작성자 인증
+- [ ] **useGetTrashedBlogComments** - `GET /api/blogs/[slug]/comments/trash` - 블로그별 소프트 딜리트된 댓글 목록 조회
+- [ ] **useRestoreBlogComment** - `POST /api/blogs/[slug]/comments/[id]/restore` - 블로그별 댓글 복원
+- [ ] **useDeleteBlogCommentPermanently** - `DELETE /api/blogs/[slug]/comments/[id]/permanent` - 블로그별 댓글 영구 삭제
 
 ### 13. 블로그별 이미지 업로드 훅
 

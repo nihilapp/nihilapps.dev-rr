@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
-import { postTable } from './posts.table';
+import { postTable } from '@/_entities/posts/posts.table';
 
 export const postRevisionTable = pgTable('post_revisions', {
   // 리비전 ID (UUID, PK)

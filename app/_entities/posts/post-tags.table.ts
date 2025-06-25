@@ -1,8 +1,7 @@
 import { pgTable, primaryKey, uuid } from 'drizzle-orm/pg-core';
 
-import { tagTable } from '../tags/tags.table';
-
-import { postTable } from './posts.table';
+import { postTable } from '@/_entities/posts/posts.table';
+import { tagTable } from '@/_entities/tags/tags.table';
 
 export const postTagTable = pgTable(
   'post_tags',

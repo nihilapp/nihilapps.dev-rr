@@ -43,6 +43,7 @@
 - [ ] `auth.otp.tsx` - **(신규)** 2단계 보안: 2FA/OTP 인증
 - [ ] `auth.signup.tsx` - **(보안)** 시스템 회원가입. `shield`와 `otp`를 통과해야만 접근 가능.
 - [ ] `auth.signout.tsx` - 로그아웃(action만 존재.)
+- [ ] `auth.otp-create.tsx` - **(개발/관리자용, 일반 사용자에게 노출되지 않음)** OTP 생성/설정
 
 ---
 
@@ -62,14 +63,17 @@
 ### 통합 컨텐츠 관리
 
 - [x] `admin.posts.tsx` - 전체 블로그 포스트 통합 관리
+- [ ] `admin.posts.trash.tsx` - 포스트 휴지통
 - [x] `admin.categories.tsx` - 전체 블로그 카테고리 통합 관리
 - [x] `admin.tags.tsx` - 전체 블로그 해시태그 통합 관리
 - [x] `admin.comments.tsx` - 전체 블로그 댓글 통합 관리
+- [ ] `admin.comments.trash.tsx` - 댓글 휴지통
 
 ### 시스템 관리
 
+- [x] `admin.blogs.tsx` - 블로그 관리 (기본 구조만)
+- [ ] `admin.blogs.trash.tsx` - 블로그 휴지통
 - [ ] `admin.users.tsx` - 사용자 관리
-- [ ] `admin.blogs.tsx` - 블로그 관리
 - [ ] `admin.images.tsx` - 전체 이미지 갤러리
 - [ ] `admin.settings.tsx` - 시스템 설정
 
@@ -108,6 +112,7 @@
 ### 포스트 관리
 
 - [ ] `blogs.$slug.admin.posts._index.tsx` - 해당 블로그 포스트 관리
+- [ ] `blogs.$slug.admin.posts.trash.tsx` - 해당 블로그 포스트 휴지통
 - [ ] `blogs.$slug.admin.posts.new.tsx` - 해당 블로그 새 포스트 작성
 - [ ] `blogs.$slug.admin.posts.$id.edit.tsx` - 해당 블로그 포스트 수정
 
@@ -116,6 +121,7 @@
 - [ ] `blogs.$slug.admin.categories.tsx` - 해당 블로그 카테고리 관리
 - [ ] `blogs.$slug.admin.hashtags.tsx` - 해당 블로그 해시태그 관리
 - [ ] `blogs.$slug.admin.comments.tsx` - 해당 블로그 댓글 관리
+- [ ] `blogs.$slug.admin.comments.trash.tsx` - 해당 블로그 댓글 휴지통
 
 ### 블로그 설정
 

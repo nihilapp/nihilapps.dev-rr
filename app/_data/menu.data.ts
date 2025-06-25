@@ -9,14 +9,23 @@ export const adminMenu: Menu[] = [
   {
     name: '블로그 관리',
     path: '/admin/blogs',
+    children: [
+      { name: '휴지통', path: '/admin/blogs/trash', },
+    ],
   },
   {
     name: '포스트 관리',
     path: '/admin/posts',
+    children: [
+      { name: '휴지통', path: '/admin/posts/trash', },
+    ],
   },
   {
     name: '덧글 관리',
     path: '/admin/comments',
+    children: [
+      { name: '휴지통', path: '/admin/comments/trash', },
+    ],
   },
   {
     name: '카테고리 관리',

@@ -8,7 +8,7 @@ import {
   varchar
 } from 'drizzle-orm/pg-core';
 
-import { userTable } from '../users/users.table';
+import { authorTable } from '@/_entities/users/authors.table';
 
 export const blogVisibilityEnum = pgEnum('blog_visibility', [ 'PUBLIC', 'PRIVATE', ]);
 
@@ -19,7 +19,7 @@ export const blogTable = pgTable('blogs', {
   // 블로그 주인 ID (FK, users.id)
   user_id: uuid()
     .notNull()
-    .references(() => userTable.id, { onDelete: 'cascade', }),
+    .references(() => authorTable.author_id, { onDelete: 'cascade', }),
 
   // 블로그 이름
   name: varchar().notNull(),

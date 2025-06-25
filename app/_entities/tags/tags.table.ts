@@ -28,9 +28,6 @@ export const tagTable = pgTable(
 
     // 생성일
     created_at: timestamp().defaultNow().notNull(),
-
-    // 삭제된 시각 (Soft Delete용)
-    deleted_at: timestamp(),
   },
   (table) => {
     return {

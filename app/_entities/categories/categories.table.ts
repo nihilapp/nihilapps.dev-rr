@@ -42,9 +42,6 @@ export const categoryTable = pgTable(
       .defaultNow()
       .notNull()
       .$onUpdate(() => new Date()),
-
-    // 삭제된 시각 (Soft Delete용)
-    deleted_at: timestamp(),
   },
   (table) => {
     return {
