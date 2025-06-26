@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useFetcher } from 'react-router';
+import { Link, redirect, useFetcher } from 'react-router';
 import { z } from 'zod';
 
 import { Button } from '@/_components/common/ui/button';
@@ -14,8 +14,16 @@ import { setMeta } from '@/_libs';
 import type { Route } from './+types/auth.signup';
 
 export async function loader({ request, }: Route.LoaderArgs) {
-  // 로그인이 되어있는 경우에는 체크 패스.
-  // 쿠키에 passCode라는 쿠키가 존재하지 않으면 절차대로 접근하지 않은 것이므로 메인 페이지로 보내버리고, passCode가 존재하면 그냥 둠.
+  // 이 페이지는 회원가입이라기보다는 계정 생성의 뉘앙스가 더 강함.
+  // 아무나 이 페이지에 접근해서는 안되기 때문에 앞에 두가지의 절차를 밟아야만 함.
+
+  // 누군가가 다이렉트로 이 페이지에 넘어올 수 있기 때문에 페이지의 세션 스토리지에서 passCode 라는 항목을 찾음.
+  const passCode = sessionStorage.getItem('passCode');
+
+  // 존재한다면 이 페이지에 있을 수 있고 존재하지 않는다면 메인 페이지로 보내버림.
+  if (!passCode) {
+    return redirect('/');
+  }
 
   return {};
 }
