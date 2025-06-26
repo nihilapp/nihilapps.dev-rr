@@ -155,21 +155,18 @@ export default function BlogAdminLayoutRoute() {
 
 ## 🔐 인증 UI (Auth Layout)
 
+- 회원가입, 로그인, 비밀번호 재설정, 이메일 인증 등은 Supabase Auth JS SDK로 처리
+- 패스코드/OTP UI는 직접 구현 (웹 접근 보안용)
+
 ### 2. 인증 페이지
 
-- [ ] 회원가입 페이지 (`app/routes/_auth.auth.signup.tsx`) - **(보안)** 접근 제어 필요
-- [ ] 로그인 페이지 (`app/routes/_auth.auth.signin.tsx`)
-- [ ] **(신규)** 보안 쉴드 페이지 (`app/routes/_auth.auth.shield.tsx`)
-  - [ ] "이메일로 전송된 40자리 패스코드를 입력해주세요." 안내 문구
-  - [ ] 패스코드 입력 필드 (단일 `<Input />`)
-  - [ ] 1분 카운트다운 타이머 UI
-  - [ ] 타임아웃 시 자동으로 홈페이지로 이동하는 로직
-- [ ] **(신규)** 2단계 인증(OTP) 페이지 (`app/routes/_auth.auth.otp.tsx`)
-  - [ ] "인증 앱에 표시된 6자리 코드를 입력해주세요." 안내 문구
-  - [ ] OTP 코드 입력 필드 (6자리)
-- [ ] 비밀번호 재설정 요청 페이지 (`app/routes/_auth.auth.forgot-password.tsx`)
-- [ ] 비밀번호 재설정 페이지 (`app/routes/_auth.auth.reset-password.tsx`)
-- [ ] 이메일 인증 페이지 (`app/routes/_auth.auth.verify-email.tsx`)
+- [ ] 회원가입 페이지 (`app/routes/_auth.auth.signup.tsx`) - Supabase Auth로 회원가입
+- [ ] 로그인 페이지 (`app/routes/_auth.auth.signin.tsx`) - Supabase Auth로 로그인
+- [ ] **(신규)** 보안 쉴드 페이지 (`app/routes/_auth.auth.shield.tsx`) - (직접 구현) 패스코드 입력
+- [ ] **(신규)** 2단계 인증(OTP) 페이지 (`app/routes/_auth.auth.otp.tsx`) - (직접 구현) OTP 코드 입력
+- [ ] 비밀번호 재설정 요청 페이지 (`app/routes/_auth.auth.forgot-password.tsx`) - Supabase Auth로 비밀번호 재설정 요청
+- [ ] 비밀번호 재설정 페이지 (`app/routes/_auth.auth.reset-password.tsx`) - Supabase Auth로 비밀번호 재설정
+- [ ] 이메일 인증 페이지 (`app/routes/_auth.auth.verify-email.tsx`) - Supabase Auth로 이메일 인증
 - [ ] 인증 폼 컴포넌트 (내부 컴포넌트)
 - [ ] 소셜 로그인 버튼 (Google, GitHub 등, 내부 컴포넌트)
 - [ ] 비밀번호 강도 표시기 (내부 컴포넌트)

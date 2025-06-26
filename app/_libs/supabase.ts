@@ -1,7 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 
+import type { Database } from '@/_entities/common/supabase.types';
+
 export function supabase() {
-  const client = createClient(
+  const client = createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_ANON_KEY!
   );
@@ -10,7 +12,7 @@ export function supabase() {
 }
 
 export function supabaseServer() {
-  const client = createClient(
+  const client = createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SECRET_KEY!
   );

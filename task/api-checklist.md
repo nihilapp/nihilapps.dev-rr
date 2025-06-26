@@ -8,42 +8,33 @@
 
 ### `app/_routes/auth.signin.tsx`
 
-- **`action`**
-  - [ ] **POST** `_action: 'signInWithEmail'` - 이메일/비밀번호 검증. 성공 시, 바로 어드민 페이지로 보내는 것이 아니라, **`/auth/shield`로 리다이렉트**하여 1단계 보안 절차를 시작.
-  - [ ] **POST** `_action: 'signInWithProvider'` - 소셜 로그인 처리. 성공 시 마찬가지로 `/auth/shield`로 리다이렉트.
-
-### `app/_routes/auth.shield.tsx` (1단계: 패스코드)
-
-- **`loader`**
-
-  - [ ] 페이지 접근 시, 40자리의 암호학적으로 안전한 패스코드를 생성.
-  - [ ] 생성된 패스코드의 해시(hash) 값과 1분의 만료 시간을 세션에 저장.
-  - [ ] 원본 패스코드를 관리자 이메일로 발송.
-
-- **`action`**
-  - [ ] **POST** - 사용자가 제출한 패스코드가 세션의 해시 값과 일치하는지, 그리고 1분 안에 제출되었는지 검증.
-  - [ ] 성공 시: 세션에 `shieldPassedAt` 타임스탬프를 기록하고, 다음 단계인 **`/auth/otp`로 리다이렉트**.
-  - [ ] 실패 시: 세션의 패스코드 정보를 파기하고, **메인 페이지(`/`)로 리다이렉트**.
-
-### `app/_routes/auth.otp.tsx` (2단계: 2FA/OTP)
-
-- **`loader`**
-
-  - [ ] `shield`를 통과했는지 확인. 통과하지 않았다면 `/auth/shield`로 리다이렉트.
-
-- **`action`**
-  - [ ] **POST** - 사용자가 제출한 OTP 코드가 유효한지 검증.
-  - [ ] 성공 시: 세션에 `otpPassedAt` 타임스탬프를 기록하고, 원래 목적지였던 **어드민 페이지 또는 `/admin`으로 리다이렉트**.
-  - [ ] 실패 시: 에러 메시지를 표시.
+- [ ] Supabase Auth의 signInWithPassword/signInWithOAuth를 사용하여 로그인 처리
+- [ ] 로그인 성공 시, `/auth/shield`로 리다이렉트 (패스코드 단계)
 
 ### `app/_routes/auth.signup.tsx`
 
-- **`loader`**
+- [ ] Supabase Auth의 signUp을 사용하여 회원가입 처리
 
-  - [ ] **(중요)** `admin.tsx`의 `loader`와 동일하게, `shield`와 `otp` 인증을 모두 통과했는지 확인. 하나라도 통과하지 못했다면 해당 인증 단계로 리다이렉트.
+### `app/_routes/auth.forgot-password.tsx`
 
-- **`action`**
-  - [ ] **POST** `_action: 'signUp'` - 이메일, 사용자명, 비밀번호로 새 계정을 생성합니다.
+- [ ] Supabase Auth의 resetPasswordForEmail을 사용하여 비밀번호 재설정 요청
+
+### `app/_routes/auth.reset-password.tsx`
+
+- [ ] Supabase Auth의 updateUser를 사용하여 비밀번호 변경
+
+### `app/_routes/auth.shield.tsx` (1단계: 패스코드)
+
+- [ ] (직접 구현) 40자리 패스코드 생성, 세션/DB에 해시 저장, 이메일 발송
+- [ ] (직접 구현) 패스코드 검증, 성공 시 `/auth/otp`로 이동
+
+### `app/_routes/auth.otp.tsx` (2단계: 2FA/OTP)
+
+- [ ] (직접 구현) OTP 코드 검증, 성공 시 어드민 페이지로 이동
+
+### `app/_routes/auth.otp-create.tsx`
+
+- [ ] (직접 구현) OTP 시크릿 생성 및 등록
 
 ### `app/_routes/auth.signout.tsx` (Action 전용 라우트)
 

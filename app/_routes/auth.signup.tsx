@@ -8,11 +8,15 @@ import { Button } from '@/_components/common/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/_components/common/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/_components/common/ui/form';
 import { Input } from '@/_components/common/ui/input';
+import { Select, SelectItem } from '@/_components/common/ui/select';
 import { setMeta } from '@/_libs';
 
 import type { Route } from './+types/auth.signup';
 
-export function loader({ request, }: Route.LoaderArgs) {
+export async function loader({ request, }: Route.LoaderArgs) {
+  // 로그인이 되어있는 경우에는 체크 패스.
+  // 쿠키에 passCode라는 쿠키가 존재하지 않으면 절차대로 접근하지 않은 것이므로 메인 페이지로 보내버리고, passCode가 존재하면 그냥 둠.
+
   return {};
 }
 
@@ -35,10 +39,22 @@ export function meta({}: Route.MetaArgs) {
 
 export default function AuthSignUpPage({}: Route.ComponentProps) {
   const formModel = z.object({
-    username: z.string().min(2, { message: '사용자 이름은 2자 이상이어야 합니다.', }),
-    email: z.string().email({ message: '유효한 이메일을 입력해주세요.', }),
-    password: z.string().min(8, { message: '비밀번호는 8자 이상이어야 합니다.', }),
-    confirmPassword: z.string(),
+    email: z.string({ message: '이메일은 필수입력값입니다.', })
+      .email({ message: '유효한 이메일을 입력해주세요.', }),
+    name: z.string({ message: '이름은 필수입력값입니다.', }),
+    username: z.string({ message: '닉네임은 필수입력값입니다.', })
+      .min(2, { message: '닉네임은 2자 이상이어야 합니다.', })
+      .max(20, { message: '닉네임은 10자 이하여야 합니다.', }),
+    role: z.enum([ 'USER', 'ADMIN', 'SUPER_ADMIN', ], { message: '권한은 필수입력값입니다.', }),
+    password: z.string({ message: '비밀번호는 필수입력값입니다.', })
+      .regex(/[A-Z]/, { message: '대문자를 포함해주세요.', })
+      .regex(/[a-z]/, { message: '소문자를 포함해주세요.', })
+      .regex(/[0-9]/, { message: '숫자를 포함해주세요.', })
+      .regex(/[!@#$%^&*]/, { message: '특수문자를 포함해주세요.', }),
+    confirmPassword: z.string({ message: '비밀번호 확인은 필수입력값입니다.', })
+      .regex(/[A-Z]/, { message: '대문자를 포함해주세요.', })
+      .regex(/[a-z]/, { message: '소문자를 포함해주세요.', })
+      .regex(/[0-9]/, { message: '숫자를 포함해주세요.', }),
   }).refine((data) => data.password === data.confirmPassword, {
     message: '비밀번호가 일치하지 않습니다.',
     path: [ 'confirmPassword', ],
@@ -49,8 +65,10 @@ export default function AuthSignUpPage({}: Route.ComponentProps) {
     mode: 'all',
     resolver: zodResolver(formModel),
     defaultValues: {
-      username: '',
       email: '',
+      name: '',
+      username: '',
+      role: 'USER' as const,
       password: '',
       confirmPassword: '',
     },
@@ -80,22 +98,6 @@ export default function AuthSignUpPage({}: Route.ComponentProps) {
           >
             <FormField
               control={form.control}
-              name='username'
-              render={({ field, }) => (
-                <FormItem>
-                  <FormLabel>사용자 이름</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder='사용자 이름을 입력하세요.'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name='email'
               render={({ field, }) => (
                 <FormItem>
@@ -111,6 +113,60 @@ export default function AuthSignUpPage({}: Route.ComponentProps) {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field, }) => (
+                <FormItem>
+                  <FormLabel>이름</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder='이름을 입력하세요.'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='username'
+              render={({ field, }) => (
+                <FormItem>
+                  <FormLabel>사용자 이름</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder='사용자 이름을 입력하세요.'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='role'
+              render={({ field, }) => (
+                <FormItem>
+                  <FormLabel>권한</FormLabel>
+                  <FormControl>
+                    <Select
+                      {...field}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectItem value='USER'>사용자</SelectItem>
+                      <SelectItem value='ADMIN'>관리자</SelectItem>
+                      <SelectItem value='SUPER_ADMIN'>슈퍼 관리자</SelectItem>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name='password'
