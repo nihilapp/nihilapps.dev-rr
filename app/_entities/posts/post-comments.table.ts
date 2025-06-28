@@ -24,20 +24,20 @@ export const postCommentStatusEnum = pgEnum('post_comment_status', [
 
 export const postCommentsTable = pgTable('post_comments', {
   // 댓글 ID (UUID, PK)
-  id: uuid().primaryKey().defaultRandom(),
+  post_comment_id: uuid().primaryKey().defaultRandom(),
 
   // 블로그 ID (FK)
   blog_id: uuid()
     .notNull()
-    .references(() => blogTable.id, { onDelete: 'cascade', }),
+    .references(() => blogTable.blog_id, { onDelete: 'cascade', }),
 
   // 포스트 ID (FK)
   post_id: uuid()
     .notNull()
-    .references(() => postTable.id, { onDelete: 'cascade', }),
+    .references(() => postTable.post_id, { onDelete: 'cascade', }),
 
-  // 작성자 유저 ID (FK, 관리자/회원일 때만, nullable)
-  user_id: uuid().references(() => authorTable.author_id, { onDelete: 'set null', }),
+  // 작성자 author ID (FK, 관리자/회원일 때만, nullable)
+  author_id: uuid().references(() => authorTable.author_id, { onDelete: 'set null', }),
 
   // ADMIN(관리자/회원), VISITOR(방문자/비회원)
   author_type: postCommentAuthorTypeEnum().default('VISITOR'),

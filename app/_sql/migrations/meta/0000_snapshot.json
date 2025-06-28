@@ -1,5 +1,5 @@
 {
-  "id": "c3591a70-20ca-4a1a-af6e-c4664b7b37d0",
+  "id": "6003f341-6a26-4def-8407-6207f217e9b2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -8,8 +8,8 @@
       "name": "blog_settings",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "blog_setting_id": {
+          "name": "blog_setting_id",
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
@@ -43,15 +43,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "blog_settings_blog_id_blogs_id_fk": {
-          "name": "blog_settings_blog_id_blogs_id_fk",
+        "blog_settings_blog_id_blogs_blog_id_fk": {
+          "name": "blog_settings_blog_id_blogs_blog_id_fk",
           "tableFrom": "blog_settings",
           "tableTo": "blogs",
           "columnsFrom": [
             "blog_id"
           ],
           "columnsTo": [
-            "id"
+            "blog_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -67,15 +67,15 @@
       "name": "blogs",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "blog_id": {
+          "name": "blog_id",
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "user_id": {
-          "name": "user_id",
+        "author_id": {
+          "name": "author_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -135,12 +135,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "blogs_user_id_authors_author_id_fk": {
-          "name": "blogs_user_id_authors_author_id_fk",
+        "blogs_author_id_authors_author_id_fk": {
+          "name": "blogs_author_id_authors_author_id_fk",
           "tableFrom": "blogs",
           "tableTo": "authors",
           "columnsFrom": [
-            "user_id"
+            "author_id"
           ],
           "columnsTo": [
             "author_id"
@@ -167,8 +167,8 @@
       "name": "categories",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "category_id": {
+          "name": "category_id",
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
@@ -215,28 +215,28 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "categories_blog_id_blogs_id_fk": {
-          "name": "categories_blog_id_blogs_id_fk",
+        "categories_blog_id_blogs_blog_id_fk": {
+          "name": "categories_blog_id_blogs_blog_id_fk",
           "tableFrom": "categories",
           "tableTo": "blogs",
           "columnsFrom": [
             "blog_id"
           ],
           "columnsTo": [
-            "id"
+            "blog_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "categories_parent_id_categories_id_fk": {
-          "name": "categories_parent_id_categories_id_fk",
+        "categories_parent_id_categories_category_id_fk": {
+          "name": "categories_parent_id_categories_category_id_fk",
           "tableFrom": "categories",
           "tableTo": "categories",
           "columnsFrom": [
             "parent_id"
           ],
           "columnsTo": [
-            "id"
+            "category_id"
           ],
           "onDelete": "set null",
           "onUpdate": "no action"
@@ -270,8 +270,8 @@
       "name": "announcements",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "announcement_id": {
+          "name": "announcement_id",
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
@@ -319,15 +319,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "announcements_blog_id_blogs_id_fk": {
-          "name": "announcements_blog_id_blogs_id_fk",
+        "announcements_blog_id_blogs_blog_id_fk": {
+          "name": "announcements_blog_id_blogs_blog_id_fk",
           "tableFrom": "announcements",
           "tableTo": "blogs",
           "columnsFrom": [
             "blog_id"
           ],
           "columnsTo": [
-            "id"
+            "blog_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -356,19 +356,17 @@
           "primaryKey": false,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "author_id": {
+          "name": "author_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
         "author_type": {
           "name": "author_type",
-          "type": "post_comment_author_type",
-          "typeSchema": "public",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'VISITOR'"
+          "notNull": false
         },
         "author_name": {
           "name": "author_name",
@@ -386,7 +384,7 @@
           "name": "content",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "author_hashed_password": {
           "name": "author_hashed_password",
@@ -411,25 +409,25 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "post_comments_replies_comment_id_post_comments_id_fk": {
-          "name": "post_comments_replies_comment_id_post_comments_id_fk",
+        "post_comments_replies_comment_id_post_comments_post_comment_id_fk": {
+          "name": "post_comments_replies_comment_id_post_comments_post_comment_id_fk",
           "tableFrom": "post_comments_replies",
           "tableTo": "post_comments",
           "columnsFrom": [
             "comment_id"
           ],
           "columnsTo": [
-            "id"
+            "post_comment_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "post_comments_replies_user_id_authors_author_id_fk": {
-          "name": "post_comments_replies_user_id_authors_author_id_fk",
+        "post_comments_replies_author_id_authors_author_id_fk": {
+          "name": "post_comments_replies_author_id_authors_author_id_fk",
           "tableFrom": "post_comments_replies",
           "tableTo": "authors",
           "columnsFrom": [
-            "user_id"
+            "author_id"
           ],
           "columnsTo": [
             "author_id"
@@ -448,8 +446,8 @@
       "name": "post_comments",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "post_comment_id": {
+          "name": "post_comment_id",
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
@@ -467,8 +465,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "author_id": {
+          "name": "author_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -530,38 +528,38 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "post_comments_blog_id_blogs_id_fk": {
-          "name": "post_comments_blog_id_blogs_id_fk",
+        "post_comments_blog_id_blogs_blog_id_fk": {
+          "name": "post_comments_blog_id_blogs_blog_id_fk",
           "tableFrom": "post_comments",
           "tableTo": "blogs",
           "columnsFrom": [
             "blog_id"
           ],
           "columnsTo": [
-            "id"
+            "blog_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "post_comments_post_id_posts_id_fk": {
-          "name": "post_comments_post_id_posts_id_fk",
+        "post_comments_post_id_posts_post_id_fk": {
+          "name": "post_comments_post_id_posts_post_id_fk",
           "tableFrom": "post_comments",
           "tableTo": "posts",
           "columnsFrom": [
             "post_id"
           ],
           "columnsTo": [
-            "id"
+            "post_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "post_comments_user_id_authors_author_id_fk": {
-          "name": "post_comments_user_id_authors_author_id_fk",
+        "post_comments_author_id_authors_author_id_fk": {
+          "name": "post_comments_author_id_authors_author_id_fk",
           "tableFrom": "post_comments",
           "tableTo": "authors",
           "columnsFrom": [
-            "user_id"
+            "author_id"
           ],
           "columnsTo": [
             "author_id"
@@ -608,28 +606,28 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "post_likes_blog_id_blogs_id_fk": {
-          "name": "post_likes_blog_id_blogs_id_fk",
+        "post_likes_blog_id_blogs_blog_id_fk": {
+          "name": "post_likes_blog_id_blogs_blog_id_fk",
           "tableFrom": "post_likes",
           "tableTo": "blogs",
           "columnsFrom": [
             "blog_id"
           ],
           "columnsTo": [
-            "id"
+            "blog_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "post_likes_post_id_posts_id_fk": {
-          "name": "post_likes_post_id_posts_id_fk",
+        "post_likes_post_id_posts_post_id_fk": {
+          "name": "post_likes_post_id_posts_post_id_fk",
           "tableFrom": "post_likes",
           "tableTo": "posts",
           "columnsFrom": [
             "post_id"
           ],
           "columnsTo": [
-            "id"
+            "post_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -653,8 +651,8 @@
       "name": "post_revisions",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "post_revision_id": {
+          "name": "post_revision_id",
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
@@ -688,15 +686,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "post_revisions_post_id_posts_id_fk": {
-          "name": "post_revisions_post_id_posts_id_fk",
+        "post_revisions_post_id_posts_post_id_fk": {
+          "name": "post_revisions_post_id_posts_post_id_fk",
           "tableFrom": "post_revisions",
           "tableTo": "posts",
           "columnsFrom": [
             "post_id"
           ],
           "columnsTo": [
-            "id"
+            "post_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -727,28 +725,28 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "post_tags_post_id_posts_id_fk": {
-          "name": "post_tags_post_id_posts_id_fk",
+        "post_tags_post_id_posts_post_id_fk": {
+          "name": "post_tags_post_id_posts_post_id_fk",
           "tableFrom": "post_tags",
           "tableTo": "posts",
           "columnsFrom": [
             "post_id"
           ],
           "columnsTo": [
-            "id"
+            "post_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "post_tags_tag_id_tags_id_fk": {
-          "name": "post_tags_tag_id_tags_id_fk",
+        "post_tags_tag_id_tags_tag_id_fk": {
+          "name": "post_tags_tag_id_tags_tag_id_fk",
           "tableFrom": "post_tags",
           "tableTo": "tags",
           "columnsFrom": [
             "tag_id"
           ],
           "columnsTo": [
-            "id"
+            "tag_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -806,28 +804,28 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "post_views_blog_id_blogs_id_fk": {
-          "name": "post_views_blog_id_blogs_id_fk",
+        "post_views_blog_id_blogs_blog_id_fk": {
+          "name": "post_views_blog_id_blogs_blog_id_fk",
           "tableFrom": "post_views",
           "tableTo": "blogs",
           "columnsFrom": [
             "blog_id"
           ],
           "columnsTo": [
-            "id"
+            "blog_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "post_views_post_id_posts_id_fk": {
-          "name": "post_views_post_id_posts_id_fk",
+        "post_views_post_id_posts_post_id_fk": {
+          "name": "post_views_post_id_posts_post_id_fk",
           "tableFrom": "post_views",
           "tableTo": "posts",
           "columnsFrom": [
             "post_id"
           ],
           "columnsTo": [
-            "id"
+            "post_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -851,8 +849,8 @@
       "name": "posts",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "post_id": {
+          "name": "post_id",
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
@@ -986,28 +984,28 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "posts_blog_id_blogs_id_fk": {
-          "name": "posts_blog_id_blogs_id_fk",
+        "posts_blog_id_blogs_blog_id_fk": {
+          "name": "posts_blog_id_blogs_blog_id_fk",
           "tableFrom": "posts",
           "tableTo": "blogs",
           "columnsFrom": [
             "blog_id"
           ],
           "columnsTo": [
-            "id"
+            "blog_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "posts_category_id_categories_id_fk": {
-          "name": "posts_category_id_categories_id_fk",
+        "posts_category_id_categories_category_id_fk": {
+          "name": "posts_category_id_categories_category_id_fk",
           "tableFrom": "posts",
           "tableTo": "categories",
           "columnsFrom": [
             "category_id"
           ],
           "columnsTo": [
-            "id"
+            "category_id"
           ],
           "onDelete": "set null",
           "onUpdate": "no action"
@@ -1032,8 +1030,8 @@
       "name": "tags",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "tag_id": {
+          "name": "tag_id",
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
@@ -1068,15 +1066,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "tags_blog_id_blogs_id_fk": {
-          "name": "tags_blog_id_blogs_id_fk",
+        "tags_blog_id_blogs_blog_id_fk": {
+          "name": "tags_blog_id_blogs_blog_id_fk",
           "tableFrom": "tags",
           "tableTo": "blogs",
           "columnsFrom": [
             "blog_id"
           ],
           "columnsTo": [
-            "id"
+            "blog_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -1137,12 +1135,33 @@
           "primaryKey": false,
           "notNull": false
         },
-        "USER": {
-          "name": "USER",
+        "role": {
+          "name": "role",
           "type": "author_role",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "'USER'"
+        },
+        "otp_string": {
+          "name": "otp_string",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},

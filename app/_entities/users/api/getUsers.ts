@@ -1,9 +1,9 @@
 import { createErrorResponse, createResponse, supabase } from '@/_libs';
 
-export async function useGetUsers() {
+export const getUsers = async () => {
   try {
     const { data, error, } = await supabase()
-      .from('get_author_with_users')
+      .from('get_authors')
       .select('*');
 
     if (error) {
@@ -27,4 +27,4 @@ export async function useGetUsers() {
       message: `서버 내부 처리 중 예외 발생: ${error instanceof Error ? error.message : String(error)}`,
     });
   }
-}
+};

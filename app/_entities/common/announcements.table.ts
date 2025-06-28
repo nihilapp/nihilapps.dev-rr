@@ -11,12 +11,12 @@ import { blogTable } from '../blogs/blogs.table';
 
 export const announcementTable = pgTable('announcements', {
   // 공지 ID (UUID, PK)
-  id: uuid().primaryKey().defaultRandom(),
+  announcement_id: uuid().primaryKey().defaultRandom(),
 
   // 블로그 ID (FK)
   blog_id: uuid()
     .notNull()
-    .references(() => blogTable.id, { onDelete: 'cascade', }),
+    .references(() => blogTable.blog_id, { onDelete: 'cascade', }),
 
   // 공지 제목
   title: varchar().notNull(),

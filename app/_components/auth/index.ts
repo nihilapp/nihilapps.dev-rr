@@ -1,2 +1,5 @@
 export { AuthLayout } from './AuthLayout';
-export { FirstShield } from './FirstShield';
+export { EmailSubmitForm } from './EmailSubmitForm';
+export { OtpVerificationForm } from './OtpVerificationForm';
+export { RequestPasscodeButton } from './RequestPasscodeButton';
+export { EmailPasscodeForm } from './EmailPasscodeForm';

@@ -28,15 +28,15 @@ export const postTable = pgTable(
   'posts',
   {
     // 포스트 ID (UUID, PK)
-    id: uuid().primaryKey().defaultRandom(),
+    post_id: uuid().primaryKey().defaultRandom(),
 
     // 소속 블로그 ID (FK)
     blog_id: uuid()
       .notNull()
-      .references(() => blogTable.id, { onDelete: 'cascade', }),
+      .references(() => blogTable.blog_id, { onDelete: 'cascade', }),
 
     // 소속 카테고리 ID (Nullable, FK)
-    category_id: uuid().references(() => categoryTable.id, {
+    category_id: uuid().references(() => categoryTable.category_id, {
       onDelete: 'set null',
     }),
 

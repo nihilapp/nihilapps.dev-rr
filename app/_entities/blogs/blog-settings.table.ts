@@ -4,12 +4,12 @@ import { blogTable } from './blogs.table';
 
 export const blogSettingTable = pgTable('blog_settings', {
   // 설정 ID (UUID, PK)
-  id: uuid().primaryKey().defaultRandom(),
+  blog_setting_id: uuid().primaryKey().defaultRandom(),
 
   // 블로그 ID (FK)
   blog_id: uuid()
     .notNull()
-    .references(() => blogTable.id, { onDelete: 'cascade', }),
+    .references(() => blogTable.blog_id, { onDelete: 'cascade', }),
 
   // 설정 키
   key: varchar().notNull(),

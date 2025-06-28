@@ -13,16 +13,16 @@ export const categoryTable = pgTable(
   'categories',
   {
     // 카테고리 ID (UUID, PK)
-    id: uuid().primaryKey().defaultRandom(),
+    category_id: uuid().primaryKey().defaultRandom(),
 
     // 블로그 ID (FK)
     blog_id: uuid()
       .notNull()
-      .references(() => blogTable.id, { onDelete: 'cascade', }),
+      .references(() => blogTable.blog_id, { onDelete: 'cascade', }),
 
     // 상위 카테고리 ID (Nullable, 자기참조 FK)
     parent_id: uuid().references(
-      (): AnyPgColumn => categoryTable.id,
+      (): AnyPgColumn => categoryTable.category_id,
       {
         onDelete: 'set null',
       }

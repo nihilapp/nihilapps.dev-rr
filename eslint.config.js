@@ -112,7 +112,7 @@ export default tseslint.config(
       'no-underscore-dangle': 'off',
 
       // Stylistic 규칙
-      '@stylistic/multiline-ternary': [ 'warn', 'never', ],
+      '@stylistic/multiline-ternary': [ 'warn', 'always', ],
       '@stylistic/arrow-parens': [ 'error', 'always', ],
       '@stylistic/quotes': [ 'warn', 'single', { allowTemplateLiterals: true, }, ],
       '@stylistic/semi': [ 'error', 'always', ],

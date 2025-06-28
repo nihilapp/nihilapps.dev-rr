@@ -1,6 +1,7 @@
 import { pgEnum, pgSchema, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 const userTable = pgSchema('auth').table('users', {
+  // 유저 ID (UUID, PK)
   id: uuid()
     .primaryKey()
     .defaultRandom(),
@@ -29,6 +30,8 @@ export const authorTable = pgTable('authors', {
   bio: text(),
   // 권한
   role: authorRoleEnum().default('USER'),
+  // 2FA OTP에 필요한 문자열
+  otp_string: text(),
   // 생성일
   created_at: timestamp().notNull().defaultNow(),
   // 업데이트일

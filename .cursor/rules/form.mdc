@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- `form` 을 작성할 때에는 `shadcn`의 `Form`으로 전체를 감싸고 그 아래에 일반 form 태그를 사용해서 구성해야 합니다. shadcn의 `Form UI`를 적극 활용하여 form을 구성합니다.

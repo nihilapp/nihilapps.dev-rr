@@ -9,11 +9,11 @@ export const postTagTable = pgTable(
     // 포스트 ID (FK)
     post_id: uuid()
       .notNull()
-      .references(() => postTable.id, { onDelete: 'cascade', }),
+      .references(() => postTable.post_id, { onDelete: 'cascade', }),
     // 태그 ID (FK)
     tag_id: uuid()
       .notNull()
-      .references(() => tagTable.id, { onDelete: 'cascade', }),
+      .references(() => tagTable.tag_id, { onDelete: 'cascade', }),
   },
   (table) => {
     return {

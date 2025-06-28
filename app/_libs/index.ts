@@ -6,3 +6,5 @@ export { db } from './db';
 export { createResponse } from './createResponse';
 export { createErrorResponse } from './createErrorResponse';
 export { supabase, supabaseServer } from './supabase';
+export { genPassCode } from './genPassCode';
+export { getSession, commitSession, destroySession } from './session';

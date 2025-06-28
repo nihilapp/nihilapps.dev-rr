@@ -31,13 +31,14 @@ export function AuthLayout({
       className={cn(cssVariants(), className)}
       {...props}
     >
-      <div className='mb-8'>
-        <Link to='/'>
+      <div className='mb-5'>
+        <Link to='/' className='flex items-center gap-2'>
           <img
             src={siteConfig.logo}
             alt='Nihilncunia Logo'
-            className='h-10 w-auto'
+            className='h-10 w-auto block'
           />
+          <span className='text-h2 font-900 mt-2'>NIHILBLOG</span>
         </Link>
       </div>
       {children}

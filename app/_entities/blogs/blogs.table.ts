@@ -14,10 +14,10 @@ export const blogVisibilityEnum = pgEnum('blog_visibility', [ 'PUBLIC', 'PRIVATE
 
 export const blogTable = pgTable('blogs', {
   // 블로그 고유 ID (UUID, PK)
-  id: uuid().primaryKey().defaultRandom(),
+  blog_id: uuid().primaryKey().defaultRandom(),
 
-  // 블로그 주인 ID (FK, users.id)
-  user_id: uuid()
+  // 블로그 주인 ID (FK, authors.author_id)
+  author_id: uuid()
     .notNull()
     .references(() => authorTable.author_id, { onDelete: 'cascade', }),
 
